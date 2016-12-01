@@ -6,7 +6,6 @@ public class GreetingServiceImpl implements GreetingService {
 
   @Override
   public CompletableFuture<String> greeting(String name) {
-    System.out.println("Provider: 'greeting' -> " + name);
     return CompletableFuture.completedFuture("Hello " + name);
   }
 
@@ -16,6 +15,11 @@ public class GreetingServiceImpl implements GreetingService {
     CompletableFuture<String> future = new CompletableFuture<>();
     future.completeExceptionally(new UnsupportedOperationException("greetingException"));
     return future;
+  }
+
+  @Override
+  public CompletableFuture<GreetingResponse> greetingRequest(GreetingRequest request) {
+    return CompletableFuture.completedFuture(new GreetingResponse("Hello " + request.name()));
   }
 
 }

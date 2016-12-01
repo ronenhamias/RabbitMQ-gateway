@@ -22,24 +22,40 @@ public class RabbitListener {
   final Channel channel;
   private final Subject<Object, Object> incomingMessagesSubject;
   private MessageSerialization serialization;
-  
-  public RabbitListener(String host) throws Exception {
+
+  public RabbitListener(String host, int port, int timeout, String password) throws Exception {
     this.factory = new ConnectionFactory();
+
     this.factory.setHost(host);
+
+    if (port != -1) {
+      this.factory.setPort(port);
+    }
+
+    this.factory.setConnectionTimeout(timeout);
+    
+    if (password != null) {
+      this.factory.setPassword(password);
+    }
+    
     this.connection = factory.newConnection();
-    this.channel= connection.createChannel();
-    this.incomingMessagesSubject = PublishSubject.<Object>create().toSerialized();  
+    this.channel = connection.createChannel();
+    this.incomingMessagesSubject = PublishSubject.<Object>create().toSerialized();
   }
-  
-  public void subscribe(String name) throws Exception{
-    channel.queueDeclare(name, true, false, false, null);
+
+  public void subscribe(Topic topic) throws Exception {
+    channel.queueDeclare(topic.name(), 
+        topic.durable(), 
+        topic.exclusive(), 
+        topic.autoDelete(), null);
+    
     final Consumer consumer = new DefaultConsumer(channel) {
       @Override
-      public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
+      public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body)
+          throws IOException {
         try {
-          incomingMessagesSubject.onNext(serialization.deserialize(body));
+          incomingMessagesSubject.onNext(serialization.deserialize(body, Message.class));
         } catch (Exception e) {
-          // TODO Auto-generated catch block
           e.printStackTrace();
         }
         try {
@@ -49,12 +65,13 @@ public class RabbitListener {
       }
     };
     boolean autoAck = false;
-    channel.basicConsume(name, autoAck, consumer);
+    channel.basicConsume(topic.name(), autoAck, consumer);
   }
-  
-  public Observable<Object> listen(MessageSerialization serialization){
+
+  @SuppressWarnings("unchecked")
+  public <T> Observable<T> listen(MessageSerialization serialization) {
     this.serialization = serialization;
-    return incomingMessagesSubject.onBackpressureBuffer();
+    return (Observable<T>) incomingMessagesSubject.onBackpressureBuffer();
   }
 
   public Channel channel() {

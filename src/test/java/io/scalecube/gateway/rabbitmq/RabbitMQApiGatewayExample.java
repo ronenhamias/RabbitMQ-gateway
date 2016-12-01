@@ -2,8 +2,12 @@ package io.scalecube.gateway.rabbitmq;
 
 import io.scalecube.examples.services.GreetingService;
 import io.scalecube.examples.services.GreetingServiceImpl;
-import io.scalecube.gateway.rabbitmq.RMQ;
 import io.scalecube.services.Microservices;
+
+import java.io.InputStream;
+import java.io.ObjectOutputStream;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
 
 /**
@@ -11,11 +15,17 @@ import io.scalecube.services.Microservices;
  */
 public class RabbitMQApiGatewayExample {
 
-  private static final String TOPIC_GREETING_SERVICE = "hello_world_topic";
+  private static final String TOPIC_GREETING_SERVICE_REQUESTS = "hello_world_requests";
 
+  private static final String TOPIC_GREETING_SERVICE_RESPONSES = "hello_world_responses";
+  
+  private static final Topic REQUEST_TOPIC = Topic.builder().name(TOPIC_GREETING_SERVICE_REQUESTS).build();
+  
+  private static final Topic RESPONSE_TOPIC = Topic.builder().name(TOPIC_GREETING_SERVICE_RESPONSES).build();
+  
   /**
-   * API Gateway example demonstrate the basic concept of an API Gateway "adapter" calling a microservice. the example
-   * reates a micro-cluster consists of:
+   * API Gateway example demonstrate the basic concept of an API Gateway "adapter" calling a microservice. 
+   * the example creates a micro-cluster consists of:
    * <li>gateway node with API Gateway.
    * <li>GreetingService node.
    * 
@@ -45,24 +55,34 @@ public class RabbitMQApiGatewayExample {
 
     // RabbitMQ API Gateway.
     RMQ serviceQueue = RMQ.builder().host("localhost").build();
-    serviceQueue.queue(TOPIC_GREETING_SERVICE).plain()
+    
+    serviceQueue.topic(REQUEST_TOPIC).plain()
         .listen().subscribe(onNext -> {
           service.greeting(onNext.toString()).whenComplete((response,ex)->{
             try {
-              serviceQueue.publish("response_queue", response);
+              serviceQueue.publish(RESPONSE_TOPIC, response);
             } catch (Exception e) {
             }
           });
         });
 
     
+    
+    CountDownLatch timeLatch = new CountDownLatch(10000);
+    long start = System.currentTimeMillis();
     // RabbitMQ service client.
     RMQ publisher = RMQ.builder().host("localhost").build();
-    publisher.queue("response_queue").plain().listen().subscribe(onNext->{
-          System.out.println(onNext);
+    
+    publisher.topic(RESPONSE_TOPIC).plain().listen().subscribe(onNext->{
+      timeLatch.countDown();
         });
     
-    publisher.plain().publish(TOPIC_GREETING_SERVICE, "joe");
-
+    for(int i = 0 ; i < 100000 ; i++){
+      publisher.plain().publish(RESPONSE_TOPIC, "joe");
+    }
+    
+    System.out.println( System.currentTimeMillis() - start);
+    timeLatch.await(100, TimeUnit.SECONDS);
+    System.out.println( System.currentTimeMillis() - start);
   }
 }

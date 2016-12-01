@@ -1,28 +1,28 @@
 package io.scalecube.gateway.rabbitmq;
 
 public interface MessageSerialization {
-  
-  public Object deserialize(byte[] data) throws Exception ;
+
+  public <T> Object deserialize(byte[] data, Class<T> clazz) throws Exception;
+
+  public <T> byte[] serialize(T value) throws Exception;
 
   public static MessageSerialization empty() {
-    
-    return new MessageSerialization(){
+    return new MessageSerialization() {
+      
       @Override
-      public Object deserialize(byte[] data) throws Exception {
-        return data;
+      public <T> Object deserialize(byte[] data, Class<T> clazz) throws Exception {
+        return (T) data;
       }
-
+      
       @Override
       public byte[] serialize(Object obj) {
-        if(obj instanceof byte[]){
+        if (obj instanceof byte[]) {
           return (byte[]) obj;
-        }else {
+        } else {
           throw new UnsupportedOperationException("Empty serialization accept only byte[] type");
         }
       }
+      
     };
   }
-
-  public byte[] serialize(Object obj);
-  
 }
