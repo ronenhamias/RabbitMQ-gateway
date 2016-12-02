@@ -1,5 +1,7 @@
 package io.scalecube.gateway.rabbitmq;
 
+import io.scalecube.gateway.rabbitmq.serialization.PlainMessageSeriazliation;
+
 import rx.Observable;
 
 public class RMQ {

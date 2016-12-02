@@ -45,7 +45,7 @@ public class Topic {
     return new Builder();
   }
 
-  static class Builder {
+  public static class Builder {
 
     private String name;
 

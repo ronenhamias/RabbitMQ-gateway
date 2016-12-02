@@ -1,7 +1,10 @@
 package io.scalecube.examples.services;
 
+import io.protostuff.Tag;
+
 public class GreetingRequest {
 
+  @Tag(value=1)
   private String name;
 
   private GreetingRequest(){};
@@ -17,4 +20,5 @@ public class GreetingRequest {
   public String name(){
     return name;
   }
+  
 }

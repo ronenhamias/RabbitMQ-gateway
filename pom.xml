@@ -19,6 +19,19 @@
 			<version>2.7.4</version>
 		</dependency>
 
+		<!-- https://mvnrepository.com/artifact/com.dyuproject.protostuff/protostuff-json -->
+		<dependency>
+			<groupId>com.dyuproject.protostuff</groupId>
+			<artifactId>protostuff-json</artifactId>
+			<version>1.0.12</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.dyuproject.protostuff/protostuff-json -->
+		<dependency>
+			<groupId>com.dyuproject.protostuff</groupId>
+			<artifactId>protostuff-runtime</artifactId>
+			<version>1.0.12</version>
+		</dependency>
+
 		<!-- https://mvnrepository.com/artifact/com.rabbitmq/amqp-client -->
 		<dependency>
 			<groupId>com.rabbitmq</groupId>
@@ -26,7 +39,7 @@
 			<version>3.6.5</version>
 		</dependency>
 	</dependencies>
-	
+
 	<build>
 
 		<plugins>
@@ -41,6 +54,6 @@
 			</plugin>
 		</plugins>
 	</build>
-	
-	
+
+
 </project>
