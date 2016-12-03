@@ -1,4 +1,4 @@
-package io.scalecube.gateway.rabbitmq.serialization;
+package io.scalecube.gateway.rabbitmq.serialization.proto;
 
 import static com.google.common.base.Preconditions.checkState;
 

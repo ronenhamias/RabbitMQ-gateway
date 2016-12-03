@@ -1,6 +1,8 @@
 package io.scalecube.gateway.rabbitmq;
 
-import io.scalecube.gateway.rabbitmq.serialization.PlainMessageSeriazliation;
+import io.scalecube.gateway.rabbitmq.serialization.proto.JsonMessageSerialization;
+import io.scalecube.gateway.rabbitmq.serialization.proto.ProtoMessageSerialization;
+import io.scalecube.gateway.rabbitmq.serialization.text.PlainMessageSeriazliation;
 
 import rx.Observable;
 
@@ -77,19 +79,35 @@ public class RMQ {
     return this;
   }
 
-  public <T> Observable<T> listen() {
-    return listener.listen(this.serialization);
+  public <T> Observable<T> listen(Class<T> class1) {
+    return listener.listen(this.serialization,class1);
   }
 
-  public void publish(Topic topic, Object obj) throws Exception{
+  public Observable<byte[]> listen() {
+    return listener.listen();
+  }
+  
+  public <T> void publish(Topic topic, Object obj) throws Exception{
     listener.channel().
       basicPublish( "", topic.name(),
             topic.properties(),
-            serialization.serialize(obj));
+            serialization.serialize((T)obj,(Class<T>)obj.getClass()));
   }
 
   public RMQ plain() {
     this.serialization = new PlainMessageSeriazliation();
     return this;
   }
+  
+  public RMQ proto() {
+    this.serialization = new ProtoMessageSerialization();
+    return this;
+  }
+  
+  public RMQ json() {
+    this.serialization = new JsonMessageSerialization();
+    return this;
+  }
+
+ 
 }

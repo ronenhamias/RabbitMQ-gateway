@@ -16,8 +16,7 @@ public class Topic {
   private boolean durable = true;
   private boolean autoDelete = false;
   private boolean exclusive = false;
-  private BasicProperties properties = MessageProperties.PERSISTENT_TEXT_PLAIN;;
-  
+  private BasicProperties properties = MessageProperties.PERSISTENT_TEXT_PLAIN;
   
   public Topic(String name) {
     this.name = name;
@@ -48,18 +47,23 @@ public class Topic {
   public static class Builder {
 
     private String name;
-
+   
     public Builder name(String name) {
       this.name = name;
       return this;
     }
-
+    
     public Topic build() {
       return new Topic(this.name);
+    }
+
+    public Topic create() {
+      return build();
     }
   }
 
   public BasicProperties properties() {
     return properties;
   }
+  
 }

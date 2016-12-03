@@ -3,14 +3,14 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>io.scalecube</groupId>
 	<artifactId>scalecube-rabbitmq</artifactId>
-	<version>1.0.0</version>
+	<version>1.0.2-SNAPSHOT</version>
 	<name>ScaleCube/RabbitMQ</name>
 
 	<dependencies>
 		<dependency>
 			<groupId>io.scalecube</groupId>
 			<artifactId>scalecube-services</artifactId>
-			<version>1.0.1</version>
+			<version>1.0.2-SNAPSHOT</version>
 		</dependency>
 
 		<dependency>
@@ -21,15 +21,15 @@
 
 		<!-- https://mvnrepository.com/artifact/com.dyuproject.protostuff/protostuff-json -->
 		<dependency>
-			<groupId>com.dyuproject.protostuff</groupId>
+			<groupId>io.protostuff</groupId>
 			<artifactId>protostuff-json</artifactId>
-			<version>1.0.12</version>
+			<version>1.5.2</version>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/com.dyuproject.protostuff/protostuff-json -->
 		<dependency>
-			<groupId>com.dyuproject.protostuff</groupId>
+			<groupId>io.protostuff</groupId>
 			<artifactId>protostuff-runtime</artifactId>
-			<version>1.0.12</version>
+			<version>1.5.2</version>
 		</dependency>
 
 		<!-- https://mvnrepository.com/artifact/com.rabbitmq/amqp-client -->

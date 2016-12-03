@@ -1,7 +1,7 @@
-package io.scalecube.gateway.rabbitmq.serialization.json;
+package io.scalecube.gateway.rabbitmq.serialization.proto;
 
-import com.dyuproject.protostuff.Schema;
-import com.dyuproject.protostuff.runtime.RuntimeSchema;
+import io.protostuff.Schema;
+import io.protostuff.runtime.RuntimeSchema;
 
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -10,9 +10,7 @@ public class SchemaCache {
   static final ConcurrentHashMap<Class, Schema> schemaCache = new ConcurrentHashMap<>();
   
   public static <T> Schema<T> getOrCreate(Class<T> clazz) {
-    
-    schemaCache.computeIfAbsent(clazz, item -> compute(clazz));
-    return schemaCache.get(clazz);
+    return schemaCache.computeIfAbsent(clazz, item -> compute(clazz));
   }
 
   private static <T> Schema<T> compute(Class<T> clazz) {

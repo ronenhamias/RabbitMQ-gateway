@@ -3,7 +3,7 @@ package io.scalecube.gateway.rabbitmq;
 import static org.junit.Assert.assertTrue;
 
 import io.scalecube.examples.services.GreetingRequest;
-import io.scalecube.gateway.rabbitmq.serialization.json.JsonMessageSerialization;
+import io.scalecube.gateway.rabbitmq.serialization.proto.JsonMessageSerialization;
 
 import org.junit.Test;
 

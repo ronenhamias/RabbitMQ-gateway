@@ -1,14 +1,13 @@
-package io.scalecube.gateway.rabbitmq.serialization.json;
+package io.scalecube.gateway.rabbitmq.serialization.proto;
 
 import io.scalecube.gateway.rabbitmq.MessageSerialization;
-
-import com.dyuproject.protostuff.JsonIOUtil;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.handler.codec.DecoderException;
 import io.netty.handler.codec.EncoderException;
-import com.dyuproject.protostuff.Schema;
+import io.protostuff.JsonIOUtil;
+import io.protostuff.Schema;
 
 
 public class JsonMessageSerialization implements MessageSerialization{

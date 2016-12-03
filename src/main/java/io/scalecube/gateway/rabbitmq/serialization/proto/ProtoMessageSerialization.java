@@ -1,4 +1,4 @@
-package io.scalecube.gateway.rabbitmq.serialization;
+package io.scalecube.gateway.rabbitmq.serialization.proto;
 
 import io.scalecube.gateway.rabbitmq.MessageSerialization;
 
@@ -42,9 +42,5 @@ public class ProtoMessageSerialization implements MessageSerialization{
       }
     } 
   }
-
   
-  public <T> byte[] serialize(Object value) throws Exception {
-    return null;
-  }
 }
