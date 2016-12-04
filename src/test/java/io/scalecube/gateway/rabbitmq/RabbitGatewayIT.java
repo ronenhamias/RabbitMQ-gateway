@@ -3,7 +3,6 @@ package io.scalecube.gateway.rabbitmq;
 import static org.junit.Assert.assertTrue;
 
 import io.scalecube.examples.services.GreetingRequest;
-import io.scalecube.examples.services.GreetingResponse;
 import io.scalecube.examples.services.GreetingService;
 import io.scalecube.examples.services.GreetingServiceImpl;
 import io.scalecube.services.Microservices;
@@ -83,7 +82,6 @@ public class RabbitGatewayIT {
     // Create Micro-cluster for the service provider
     Microservices serviceProvider = Microservices.builder()
         .port(3000)
-        .portAutoIncrement(false)
         // serviceProvider will join the gateway micro-cluster
         .seeds(gateway.cluster().address())
         // this Micro-cluster provision GreetingService microservice instance
@@ -120,7 +118,6 @@ public class RabbitGatewayIT {
     // Create Micro-cluster for the api gateway cluster Member
     Microservices gateway = Microservices.builder()
         .port(9000)
-        .portAutoIncrement(false)
         .build();
 
     // Create Micro-cluster for the service provider

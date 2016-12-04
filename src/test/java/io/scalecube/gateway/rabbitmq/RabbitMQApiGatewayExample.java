@@ -45,7 +45,6 @@ public class RabbitMQApiGatewayExample {
     Microservices serviceProvider = Microservices.builder()
         // serviceProvider will join the gateway micro-cluster
         .seeds(gateway.cluster().address())
-        .portAutoIncrement(false)
         .port(7000)
         // this Micro-cluster provision GreetingService microservice instance
         .services(new GreetingServiceImpl())

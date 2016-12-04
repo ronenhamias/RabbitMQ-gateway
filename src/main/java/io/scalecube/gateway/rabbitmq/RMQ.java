@@ -22,6 +22,8 @@ public class RMQ {
     private int timeout = 0;
 
     private String password = null;
+
+    private String username = null;
       
     /**
      * Set the host of the broker.
@@ -45,8 +47,18 @@ public class RMQ {
      * Set the password.
      * @param password the password to use when connecting to the RMQ broker if null not in use.
      */
-    public void password(String password) {
+    public Builder username(String username) {
+        this.username = username;
+        return this;
+    }
+    
+    /**
+     * Set the password.
+     * @param password the password to use when connecting to the RMQ broker if null not in use.
+     */
+    public Builder password(String password) {
         this.password = password;
+        return this;
     }
     
     /**
@@ -62,6 +74,7 @@ public class RMQ {
       return new RMQ(new RabbitListener(this.host,
           this.port,
           this.timeout,
+          this.username,
           this.password));
     }
   }
@@ -79,6 +92,11 @@ public class RMQ {
     return this;
   }
 
+  public RMQ exchange(Exchange exchange) throws Exception {
+    listener.subscribe(exchange);
+    return this;
+  }
+  
   public <T> Observable<T> listen(Class<T> class1) {
     return listener.listen(this.serialization,class1);
   }
