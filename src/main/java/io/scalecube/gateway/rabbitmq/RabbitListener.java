@@ -26,7 +26,7 @@ public class RabbitListener {
   
   private MessageSerialization serialization;
 
-  public RabbitListener(String host, int port, int timeout, String username, String password) throws Exception {
+  public RabbitListener(String host, int port, int timeout, Credentials credentials) throws Exception {
     this.factory = new ConnectionFactory();
 
     this.factory.setHost(host);
@@ -37,12 +37,12 @@ public class RabbitListener {
 
     this.factory.setConnectionTimeout(timeout);
 
-    if (password != null) {
-      this.factory.setPassword(password);
-    }
-
-    if (username != null) {
-      this.factory.setUsername(username);
+    if (credentials != null) {
+      if(credentials instanceof BasicCredentials){
+        BasicCredentials basic = (BasicCredentials) credentials;
+        this.factory.setUsername(basic.username());
+        this.factory.setPassword(basic.password());
+      }
     }
 
     this.connection = factory.newConnection();

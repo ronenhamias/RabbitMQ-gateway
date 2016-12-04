@@ -21,9 +21,7 @@ public class RMQ {
 
     private int timeout = 0;
 
-    private String password = null;
-
-    private String username = null;
+    private Credentials credentials;
       
     /**
      * Set the host of the broker.
@@ -47,20 +45,11 @@ public class RMQ {
      * Set the password.
      * @param password the password to use when connecting to the RMQ broker if null not in use.
      */
-    public Builder username(String username) {
-        this.username = username;
+    public Builder credentials(Credentials credentials) {
+        this.credentials = credentials;
         return this;
     }
-    
-    /**
-     * Set the password.
-     * @param password the password to use when connecting to the RMQ broker if null not in use.
-     */
-    public Builder password(String password) {
-        this.password = password;
-        return this;
-    }
-    
+      
     /**
      * Set the TCP connection timeout.
      * @param timeout connection TCP establishment timeout in milliseconds; zero for infinite
@@ -74,8 +63,7 @@ public class RMQ {
       return new RMQ(new RabbitListener(this.host,
           this.port,
           this.timeout,
-          this.username,
-          this.password));
+          this.credentials));
     }
   }
 
