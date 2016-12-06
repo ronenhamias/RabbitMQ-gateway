@@ -23,7 +23,7 @@ Microservices serviceProvider = Microservices.builder()
 GreetingService service = gateway.proxy()
     .api(GreetingService.class)
     .create();  
-    
+
 ```
 
 
