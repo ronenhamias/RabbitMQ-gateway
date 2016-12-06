@@ -80,8 +80,8 @@ public class RMQ {
     return this;
   }
 
-  public RMQ exchange(Exchange exchange) throws Exception {
-    listener.subscribe(exchange);
+  public RMQ exchange(Exchange exchange, Topic topic, String routingKey) throws Exception {
+    listener.subscribe(exchange, topic, routingKey);
     return this;
   }
   
@@ -95,11 +95,14 @@ public class RMQ {
   
   public <T> void publish(Topic topic, Object obj) throws Exception{
     listener.channel().
-      basicPublish( "", topic.name(),
+      basicPublish( topic.exchange(), topic.name(),
             topic.properties(),
-            serialization.serialize((T)obj,(Class<T>)obj.getClass()));
+            serialization.serialize((T)obj,
+                (Class<T>)obj.getClass()));
   }
 
+ 
+  
   public RMQ plain() {
     this.serialization = new PlainMessageSeriazliation();
     return this;

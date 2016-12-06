@@ -7,7 +7,7 @@ public class Exchange {
 
 
   private String name;
-  private String type;
+  private String type = "direct";
   private boolean durable = true;
   private boolean autoDelete = false;
   private boolean internal = false;
@@ -62,7 +62,7 @@ public class Exchange {
   public static class Builder {
 
     private String name;
-    private String type;
+    private String type = "direct";
     private boolean durable;
     private boolean autoDelete;
     private boolean internal;
@@ -105,10 +105,6 @@ public class Exchange {
           this.autoDelete,
           this.internal,
           this.properties);
-    }
-
-    public Exchange create() {
-      return build();
     }
   }
 

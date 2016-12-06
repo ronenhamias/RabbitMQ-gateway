@@ -17,9 +17,11 @@ public class Topic {
   private boolean autoDelete = false;
   private boolean exclusive = false;
   private BasicProperties properties = MessageProperties.PERSISTENT_TEXT_PLAIN;
+  private String exchange = "";
   
-  public Topic(String name) {
+  public Topic(String name, String exchange) {
     this.name = name;
+    this.exchange = exchange;
   }
 
   public String name() {
@@ -48,13 +50,20 @@ public class Topic {
 
     private String name;
    
+    private String exchange = "";
+    
     public Builder name(String name) {
       this.name = name;
       return this;
     }
     
+    public Builder exchange(String exchange) {
+      this.exchange = exchange;
+      return this;
+    }
+    
     public Topic build() {
-      return new Topic(this.name);
+      return new Topic(this.name,this.exchange);
     }
 
     public Topic create() {
@@ -64,6 +73,10 @@ public class Topic {
 
   public BasicProperties properties() {
     return properties;
+  }
+
+  public String exchange() {
+    return exchange ;
   }
   
 }

@@ -65,17 +65,25 @@ public class RabbitListener {
    * @return a declaration-confirm method to indicate the exchange was successfully declared
    * @throws java.io.IOException if an error is encountered
    */
-  public void subscribe(Exchange exchange) throws Exception {
+  public void subscribe(Exchange exchange, Topic topic, String routingKey) throws Exception {
+    
     channel.exchangeDeclare(exchange.name(),
         exchange.type(),
         exchange.durable(),
         exchange.autoDelete(),
         exchange.autoDelete(), 
         exchange.properties());
-
+    
+    channel.queueDeclare(topic.name(),
+        topic.durable(),
+        topic.exclusive(),
+        topic.autoDelete(), null);
+    
+    channel.queueBind(topic.name(), exchange.name(), routingKey);
+    
     final Consumer consumer = createConsumer(channel);
     boolean autoAck = false;
-    channel.basicConsume(exchange.name(), autoAck, consumer);
+    channel.basicConsume(topic.name(), autoAck, consumer);
   }
 
   public void subscribe(Topic topic) throws Exception {
@@ -95,6 +103,7 @@ public class RabbitListener {
       public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body)
           throws IOException {
         try {
+          
           incomingMessagesSubject.onNext(body);
         } catch (Exception e) {
           e.printStackTrace();
