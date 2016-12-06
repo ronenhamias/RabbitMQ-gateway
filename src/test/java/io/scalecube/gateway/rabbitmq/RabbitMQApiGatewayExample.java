@@ -57,9 +57,9 @@ public class RabbitMQApiGatewayExample {
         .create();
 
     // RabbitMQ API Gateway.
-    RMQ serviceQueue = RMQ.builder().host("localhost").build();
+    RMQ serviceQueue = RMQ.builder().plain().host("localhost").build();
 
-    serviceQueue.topic(REQUEST_TOPIC).plain()
+    serviceQueue.topic(REQUEST_TOPIC)
         .listen(String.class).subscribe(onNext -> {
           service.greeting(onNext.toString()).whenComplete((response, ex) -> {
             try {
@@ -74,14 +74,14 @@ public class RabbitMQApiGatewayExample {
     CountDownLatch timeLatch = new CountDownLatch(10000);
     long start = System.currentTimeMillis();
     // RabbitMQ service client.
-    RMQ publisher = RMQ.builder().host("localhost").build();
+    RMQ publisher = RMQ.builder().plain().host("localhost").build();
 
-    publisher.topic(RESPONSE_TOPIC).plain().listen(String.class).subscribe(onNext -> {
+    publisher.topic(RESPONSE_TOPIC).listen(String.class).subscribe(onNext -> {
       timeLatch.countDown();
     });
 
     for (int i = 0; i < 100000; i++) {
-      publisher.plain().publish(RESPONSE_TOPIC, "joe");
+      publisher.publish(RESPONSE_TOPIC, "joe");
     }
 
     System.out.println(System.currentTimeMillis() - start);

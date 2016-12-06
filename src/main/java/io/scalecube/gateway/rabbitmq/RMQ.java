@@ -9,7 +9,7 @@ import rx.Observable;
 public class RMQ {
 
   private RabbitListener listener;
-  private MessageSerialization serialization = MessageSerialization.empty();
+  private MessageSerialization rmqSerialization;
   
   public static class Builder {
 
@@ -22,6 +22,8 @@ public class RMQ {
     private int timeout = 0;
 
     private Credentials credentials;
+
+    private MessageSerialization serialization = MessageSerialization.empty();
       
     /**
      * Set the host of the broker.
@@ -63,12 +65,29 @@ public class RMQ {
       return new RMQ(new RabbitListener(this.host,
           this.port,
           this.timeout,
-          this.credentials));
+          this.credentials,
+          this.serialization),this.serialization);
+    }
+
+    public Builder plain() {
+      this.serialization = new PlainMessageSeriazliation();
+      return this;
+    }
+    
+    public Builder proto() {
+      this.serialization = new ProtoMessageSerialization();
+      return this;
+    }
+    
+    public Builder json() {
+      this.serialization = new JsonMessageSerialization();
+      return this;
     }
   }
 
-  private RMQ(RabbitListener rabbitListener) {
+  private RMQ(RabbitListener rabbitListener, MessageSerialization serialization) {
     this.listener = rabbitListener;
+    this.rmqSerialization =serialization;
   }
 
   public static Builder builder() {
@@ -86,7 +105,7 @@ public class RMQ {
   }
   
   public <T> Observable<T> listen(Class<T> class1) {
-    return listener.listen(this.serialization,class1);
+    return listener.listen(class1);
   }
 
   public Observable<byte[]> listen() {
@@ -97,26 +116,7 @@ public class RMQ {
     listener.channel().
       basicPublish( topic.exchange(), topic.name(),
             topic.properties(),
-            serialization.serialize((T)obj,
+            rmqSerialization.serialize((T)obj,
                 (Class<T>)obj.getClass()));
   }
-
- 
-  
-  public RMQ plain() {
-    this.serialization = new PlainMessageSeriazliation();
-    return this;
-  }
-  
-  public RMQ proto() {
-    this.serialization = new ProtoMessageSerialization();
-    return this;
-  }
-  
-  public RMQ json() {
-    this.serialization = new JsonMessageSerialization();
-    return this;
-  }
-
- 
 }

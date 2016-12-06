@@ -26,9 +26,10 @@ public class RabbitListener {
   
   private MessageSerialization serialization;
 
-  public RabbitListener(String host, int port, int timeout, Credentials credentials) throws Exception {
+  public RabbitListener(String host, int port, int timeout, Credentials credentials, MessageSerialization serialization) throws Exception {
     this.factory = new ConnectionFactory();
-
+    this.serialization = serialization;
+    
     this.factory.setHost(host);
 
     if (port != -1) {
@@ -103,7 +104,6 @@ public class RabbitListener {
       public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body)
           throws IOException {
         try {
-          
           incomingMessagesSubject.onNext(body);
         } catch (Exception e) {
           e.printStackTrace();
@@ -118,8 +118,7 @@ public class RabbitListener {
   }
 
   @SuppressWarnings("unchecked")
-  public <T> Observable<T> listen(MessageSerialization serialization, Class<T> class1) {
-    this.serialization = serialization;
+  public <T> Observable<T> listen(Class<T> class1) {
     return (Observable<T>) incomingMessagesSubject
         .onBackpressureBuffer().map(onNext -> deserialize((byte[]) onNext, class1));
   }

@@ -65,16 +65,15 @@ public class RabbitGatewayIT {
         .services(new GreetingServiceImpl())
         .build();
 
-
     // Create service proxy from gateway micro-cluster.
     GreetingService service = gateway.proxy()
         .api(GreetingService.class)
         .create();
 
     // RabbitMQ API Gateway.
-    RMQ serviceQueue = RMQ.builder().host("localhost").build();
+    RMQ serviceQueue = RMQ.builder().plain().host("localhost").build();
 
-    serviceQueue.topic(REQUEST_TOPIC_PLAIN).plain()
+    serviceQueue.topic(REQUEST_TOPIC_PLAIN)
         .listen(String.class).subscribe(onNext -> {
           service.greeting(onNext.toString()).whenComplete((response, ex) -> {
             try {
@@ -87,9 +86,9 @@ public class RabbitGatewayIT {
     CountDownLatch timeLatch = new CountDownLatch(1);
 
     // RabbitMQ service client.
-    RMQ publisher = RMQ.builder().host("localhost").build();
+    RMQ publisher = RMQ.builder().plain().host("localhost").build();
 
-    publisher.topic(RESPONSE_TOPIC_PLAIN).plain()
+    publisher.topic(RESPONSE_TOPIC_PLAIN)
         .listen(String.class).subscribe(onNext -> {
 
           assertTrue(onNext.equals("Hello joe"));
@@ -97,7 +96,7 @@ public class RabbitGatewayIT {
         });
 
     long start = System.currentTimeMillis();
-    publisher.plain().publish(REQUEST_TOPIC_PLAIN, "joe");
+    publisher.publish(REQUEST_TOPIC_PLAIN, "joe");
     System.out.println(System.currentTimeMillis() - start);
     timeLatch.await(1, TimeUnit.SECONDS);
     System.out.println(System.currentTimeMillis() - start);
@@ -125,14 +124,14 @@ public class RabbitGatewayIT {
         .create();
 
     // RabbitMQ API Gateway.
-    RMQ publisher = RMQ.builder().host("localhost").build();
+    RMQ publisher = RMQ.builder().proto().host("localhost").build();
 
 
-    publisher.topic(REQUEST_TOPIC_PROTO).proto()
+    publisher.topic(REQUEST_TOPIC_PROTO)
         .listen(GreetingRequest.class).subscribe(onNext -> {
           service.greetingRequest(onNext).whenComplete((response, ex) -> {
             try {
-              publisher.proto().publish(REQUEST_TOPIC_PROTO, response);
+              publisher.publish(REQUEST_TOPIC_PROTO, response);
             } catch (Exception e) {
             }
           });
@@ -140,8 +139,8 @@ public class RabbitGatewayIT {
 
 
     CountDownLatch timeLatch = new CountDownLatch(1);
-    RMQ responseSubscriber = RMQ.builder().host("localhost").build();
-    responseSubscriber.proto().topic(RESPONSE_TOPIC_PROTO).listen(GreetingResponse.class)
+    RMQ responseSubscriber = RMQ.builder().proto().host("localhost").build();
+    responseSubscriber.topic(RESPONSE_TOPIC_PROTO).listen(GreetingResponse.class)
         .subscribe(onNext -> {
           System.out.println(onNext.result());
           assertTrue(onNext.result().equals("Hello joe"));
@@ -149,7 +148,7 @@ public class RabbitGatewayIT {
         });
 
     long start = System.currentTimeMillis();
-    responseSubscriber.proto().publish(REQUEST_TOPIC_PROTO, new GreetingRequest("joe"));
+    responseSubscriber.publish(REQUEST_TOPIC_PROTO, new GreetingRequest("joe"));
     System.out.println("test_rabbit_mq_greeting_proto_request_reply sent ms:" + (System.currentTimeMillis() - start));
     timeLatch.await(2, TimeUnit.SECONDS);
     System.out
@@ -178,14 +177,14 @@ public class RabbitGatewayIT {
         .create();
 
     // RabbitMQ API Gateway.
-    RMQ publisher = RMQ.builder().host("localhost").build();
+    RMQ publisher = RMQ.builder().host("localhost").json().build();
 
 
-    Subscription reqSubscription = publisher.topic(REQUEST_TOPIC_JSON).json()
+    Subscription reqSubscription = publisher.topic(REQUEST_TOPIC_JSON)
         .listen(GreetingRequest.class).subscribe(onNext -> {
           service.greetingRequest(onNext).whenComplete((response, ex) -> {
             try {
-              publisher.json().publish(RESPONSE_TOPIC_JSON, response);
+              publisher.publish(RESPONSE_TOPIC_JSON, response);
             } catch (Exception e) {
             }
           });
@@ -193,8 +192,8 @@ public class RabbitGatewayIT {
 
 
     CountDownLatch timeLatch = new CountDownLatch(1);
-    RMQ responseSubscriber = RMQ.builder().host("localhost").build();
-    Subscription subscription = responseSubscriber.json().topic(RESPONSE_TOPIC_JSON).listen(GreetingResponse.class)
+    RMQ responseSubscriber = RMQ.builder().json().host("localhost").build();
+    Subscription subscription = responseSubscriber.topic(RESPONSE_TOPIC_JSON).listen(GreetingResponse.class)
         .subscribe(onNext -> {
           System.out.println(onNext.result());
           assertTrue(onNext.result().equals("Hello joe"));
@@ -203,7 +202,7 @@ public class RabbitGatewayIT {
         });
 
     long start = System.currentTimeMillis();
-    responseSubscriber.json().publish(REQUEST_TOPIC_JSON, new GreetingRequest("joe"));
+    responseSubscriber.publish(REQUEST_TOPIC_JSON, new GreetingRequest("joe"));
     System.out.println("test_rabbit_mq_greeting_json_request_reply sent ms:" + (System.currentTimeMillis() - start));
     timeLatch.await(2, TimeUnit.SECONDS);
     System.out
@@ -287,17 +286,17 @@ public class RabbitGatewayIT {
         .create();
 
     // RabbitMQ API Gateway.
-    RMQ serviceQueue = RMQ.builder().host("localhost").build();
+    RMQ serviceQueue = RMQ.builder().plain().host("localhost").build();
 
     Exchange exchange = Exchange.builder().name("in").build();
 
     serviceQueue.exchange(exchange, REQUEST_TOPIC_PLAIN, "");
 
-    serviceQueue.topic(REQUEST_TOPIC_PLAIN).plain().listen(String.class).subscribe(onNext -> {
+    serviceQueue.topic(REQUEST_TOPIC_PLAIN).listen(String.class).subscribe(onNext -> {
       service.greeting(new String(onNext)).whenComplete((response, ex) -> {
         try {
           System.out.println("service response " + response);
-          serviceQueue.plain().publish(RESPONSE_TOPIC_PLAIN, response);
+          serviceQueue.publish(RESPONSE_TOPIC_PLAIN, response);
         } catch (Exception e) {
         }
       });
@@ -306,16 +305,16 @@ public class RabbitGatewayIT {
     CountDownLatch timeLatch = new CountDownLatch(1);
     long start = System.currentTimeMillis();
     // RabbitMQ service client.
-    RMQ publisher = RMQ.builder().host("localhost").build();
+    RMQ publisher = RMQ.builder().plain().host("localhost").build();
 
-    publisher.topic(RESPONSE_TOPIC_PLAIN).plain().listen(String.class)
+    publisher.topic(RESPONSE_TOPIC_PLAIN).listen(String.class)
         .subscribe(onNext -> {
           System.out.println("RMQ response " + onNext);
           assertTrue(onNext.equals("Hello joe"));
           timeLatch.countDown();
         });
 
-    publisher.plain().publish(REQUEST_TOPIC_PLAIN, "joe");
+    publisher.publish(REQUEST_TOPIC_PLAIN, "joe");
     System.out
         .println("test_rabbit_mq_exchange_greeting_byte_request_reply sent ms:" + (System.currentTimeMillis() - start));
     timeLatch.await(1, TimeUnit.SECONDS);
