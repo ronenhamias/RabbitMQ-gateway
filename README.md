@@ -19,7 +19,7 @@ Microservices serviceProvider = Microservices.builder()
 
 
 
-// Acuire proxy to the microservice from any member (see scalecube microservices for more info).
+// Acquire proxy to the microservice from any member (see scalecube microservices for more info).
 GreetingService service = gateway.proxy()
     .api(GreetingService.class)
     .create();  
