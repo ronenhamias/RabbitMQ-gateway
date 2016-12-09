@@ -1,6 +1,10 @@
 # RabbitMQ
 RabbitMQ integration with scalecube services
 
+Features:
+- Java 8, RxJava Observers
+- serialization , byte[], string , json, google protocol buffers 
+- Exchange , Queue
 
 # Basic Usage
 
