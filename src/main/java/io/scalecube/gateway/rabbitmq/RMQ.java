@@ -115,10 +115,8 @@ public class RMQ {
     return listener.listen();
   }
 
-
-  // todo: use publisher instead
   public <T> void publish(Topic topic, Object obj) throws Exception{
-    listener.channel().
+    publisher.channel().
             basicPublish( topic.exchange(), topic.name(),
                     topic.properties(),
                     rmqSerialization.serialize((T)obj,
@@ -128,7 +126,6 @@ public class RMQ {
   public <T> void publish(Exchange exchange, String routingKey, Object obj) throws Exception{
     publisher.channel().
       basicPublish( exchange.name(), routingKey,
-              // todo use exchange.properties(),
               new AMQP.BasicProperties.Builder()
                       .deliveryMode(1) // transient
                       .build(),

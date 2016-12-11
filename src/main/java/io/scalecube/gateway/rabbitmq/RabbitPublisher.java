@@ -3,7 +3,7 @@ package io.scalecube.gateway.rabbitmq;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
-import com.rabbitmq.client.Consumer;
+
 import rx.subjects.PublishSubject;
 import rx.subjects.Subject;
 

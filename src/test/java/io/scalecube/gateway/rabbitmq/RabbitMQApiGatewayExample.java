@@ -6,6 +6,7 @@ import io.scalecube.services.Microservices;
 
 import java.io.InputStream;
 import java.io.ObjectOutputStream;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
@@ -77,15 +78,24 @@ public class RabbitMQApiGatewayExample {
     RMQ publisher = RMQ.builder().plain().host("localhost").build();
 
     publisher.topic(RESPONSE_TOPIC).listen(String.class).subscribe(onNext -> {
+      System.out.println(onNext + timeLatch.getCount());
       timeLatch.countDown();
     });
 
-    for (int i = 0; i < 100000; i++) {
-      publisher.publish(RESPONSE_TOPIC, "joe");
-    }
-
+    CompletableFuture.supplyAsync(()->{
+      for (int i = 0; i < 100000; i++) {
+        try {
+          publisher.publish(REQUEST_TOPIC, "joe");
+        } catch (Exception e) {
+          // TODO Auto-generated catch block
+          e.printStackTrace();
+        }
+      }
+      return null;
+    });
     System.out.println(System.currentTimeMillis() - start);
     timeLatch.await(100, TimeUnit.SECONDS);
     System.out.println(System.currentTimeMillis() - start);
+    System.exit(0);
   }
 }
