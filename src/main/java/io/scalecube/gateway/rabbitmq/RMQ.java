@@ -1,5 +1,6 @@
 package io.scalecube.gateway.rabbitmq;
 
+import com.rabbitmq.client.AMQP;
 import io.scalecube.gateway.rabbitmq.serialization.proto.JsonMessageSerialization;
 import io.scalecube.gateway.rabbitmq.serialization.proto.ProtoMessageSerialization;
 import io.scalecube.gateway.rabbitmq.serialization.text.PlainMessageSeriazliation;
@@ -8,10 +9,12 @@ import rx.Observable;
 
 public class RMQ {
 
+  private RabbitPublisher publisher;
   private RabbitListener listener;
   private MessageSerialization rmqSerialization;
   
   public static class Builder {
+
 
     private String host = "localhost";
     
@@ -45,7 +48,7 @@ public class RMQ {
     
     /**
      * Set the password.
-     * @param password the password to use when connecting to the RMQ broker if null not in use.
+     * @param credentials the password to use when connecting to the RMQ broker if null not in use.
      */
     public Builder credentials(Credentials credentials) {
         this.credentials = credentials;
@@ -62,11 +65,10 @@ public class RMQ {
     }
     
     public RMQ build() throws Exception {
-      return new RMQ(new RabbitListener(this.host,
-          this.port,
-          this.timeout,
-          this.credentials,
-          this.serialization),this.serialization);
+      return new RMQ(
+              new RabbitListener(this.host, this.port, this.timeout, this.credentials, this.serialization),
+              new RabbitPublisher(this.host, this.port,this.timeout, this.credentials,this.serialization),
+              this.serialization);
     }
 
     public Builder plain() {
@@ -85,8 +87,9 @@ public class RMQ {
     }
   }
 
-  private RMQ(RabbitListener rabbitListener, MessageSerialization serialization) {
+  private RMQ(RabbitListener rabbitListener, RabbitPublisher rabbitPublisher, MessageSerialization serialization) {
     this.listener = rabbitListener;
+    this.publisher = rabbitPublisher;
     this.rmqSerialization =serialization;
   }
 
@@ -111,12 +114,27 @@ public class RMQ {
   public Observable<byte[]> listen() {
     return listener.listen();
   }
-  
+
+
+  // todo: use publisher instead
   public <T> void publish(Topic topic, Object obj) throws Exception{
     listener.channel().
-      basicPublish( topic.exchange(), topic.name(),
-            topic.properties(),
+            basicPublish( topic.exchange(), topic.name(),
+                    topic.properties(),
+                    rmqSerialization.serialize((T)obj,
+                            (Class<T>)obj.getClass()));
+  }
+
+  public <T> void publish(Exchange exchange, String routingKey, Object obj) throws Exception{
+    publisher.channel().
+      basicPublish( exchange.name(), routingKey,
+              // todo use exchange.properties(),
+              new AMQP.BasicProperties.Builder()
+                      .deliveryMode(1) // transient
+                      .build(),
             rmqSerialization.serialize((T)obj,
                 (Class<T>)obj.getClass()));
   }
+
+
 }
