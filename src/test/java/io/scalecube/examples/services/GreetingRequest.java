@@ -4,21 +4,21 @@ import io.protostuff.Tag;
 
 public class GreetingRequest {
 
-  @Tag(value=1)
+  @Tag(value = 1)
   private String name;
 
-  private GreetingRequest(){};
-  
+  private GreetingRequest() {};
+
   public String getName() {
     return name;
   }
 
   public GreetingRequest(String name) {
-    this.name =  name;
+    this.name = name;
   }
 
-  public String name(){
+  public String name() {
     return name;
   }
-  
+
 }

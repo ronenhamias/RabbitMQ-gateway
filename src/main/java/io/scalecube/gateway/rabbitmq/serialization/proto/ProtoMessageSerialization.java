@@ -10,16 +10,16 @@ import io.netty.handler.codec.EncoderException;
 import io.protostuff.ProtostuffIOUtil;
 import io.protostuff.Schema;
 
-public class ProtoMessageSerialization implements MessageSerialization{
+public class ProtoMessageSerialization implements MessageSerialization {
 
   private static final RecyclableLinkedBuffer recyclableLinkedBuffer = new RecyclableLinkedBuffer();
-  
+
   @Override
   public <T> T deserialize(byte[] data, Class<T> clazz) throws Exception {
-    
+
     Schema<T> schema = SchemaCache.getOrCreate(clazz);
     T message = schema.newMessage();
-    ByteBuf bb =  Unpooled.copiedBuffer(data, 0, data.length);
+    ByteBuf bb = Unpooled.copiedBuffer(data, 0, data.length);
     try {
       ProtostuffIOUtil.mergeFrom(new ByteBufInputStream(bb), message, schema);
     } catch (Exception e) {
@@ -31,16 +31,16 @@ public class ProtoMessageSerialization implements MessageSerialization{
 
   @Override
   public <T> byte[] serialize(T value, Class<T> clazz) throws Exception {
-    
+
     Schema<T> schema = SchemaCache.getOrCreate(clazz);
-    
+
     try (RecyclableLinkedBuffer rlb = recyclableLinkedBuffer.get()) {
       try {
         return ProtostuffIOUtil.toByteArray(value, schema, rlb.buffer());
       } catch (Exception e) {
         throw new EncoderException(e.getMessage(), e);
       }
-    } 
+    }
   }
-  
+
 }

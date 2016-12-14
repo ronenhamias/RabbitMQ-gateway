@@ -108,7 +108,7 @@ public class Exchange {
     }
   }
 
-  public Map<String,Object> properties() {
+  public Map<String, Object> properties() {
     return properties;
   }
 

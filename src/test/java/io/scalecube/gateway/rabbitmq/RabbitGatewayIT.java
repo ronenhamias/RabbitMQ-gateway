@@ -1,7 +1,6 @@
 package io.scalecube.gateway.rabbitmq;
 
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 import io.scalecube.examples.services.GreetingRequest;
 import io.scalecube.examples.services.GreetingResponse;
@@ -22,17 +21,19 @@ public class RabbitGatewayIT {
   private static final String TOPIC_GREETING_SERVICE_RESPONSES_BYTES = "hello_world_responses_bytes";
 
   private static final Topic REQUEST_TOPIC_BYTES = Topic.builder().name(TOPIC_GREETING_SERVICE_REQUESTS_BYTES).build();
-  private static final Topic RESPONSE_TOPIC_BYTES = Topic.builder().name(TOPIC_GREETING_SERVICE_RESPONSES_BYTES).build();
+  private static final Topic RESPONSE_TOPIC_BYTES =
+      Topic.builder().name(TOPIC_GREETING_SERVICE_RESPONSES_BYTES).build();
 
-  
-  
+
+
   private static final String TOPIC_GREETING_SERVICE_REQUESTS_PLAIN = "hello_world_requests_plain";
   private static final String TOPIC_GREETING_SERVICE_RESPONSES_PLAIN = "hello_world_responses_plain";
 
   private static final Topic REQUEST_TOPIC_PLAIN = Topic.builder().name(TOPIC_GREETING_SERVICE_REQUESTS_PLAIN).build();
-  private static final Topic RESPONSE_TOPIC_PLAIN = Topic.builder().name(TOPIC_GREETING_SERVICE_RESPONSES_PLAIN).build();
+  private static final Topic RESPONSE_TOPIC_PLAIN =
+      Topic.builder().name(TOPIC_GREETING_SERVICE_RESPONSES_PLAIN).build();
 
-  
+
   private static final String TOPIC_GREETING_SERVICE_REQUESTS_JSON = "hello_world_requests_json";
   private static final String TOPIC_GREETING_SERVICE_RESPONSES_JSON = "hello_world_responses_json";
 
@@ -40,18 +41,16 @@ public class RabbitGatewayIT {
   private static final Topic RESPONSE_TOPIC_JSON = Topic.builder().name(TOPIC_GREETING_SERVICE_RESPONSES_JSON).build();
 
 
-  
-  
+
   private static final String TOPIC_GREETING_SERVICE_REQUESTS_PROTO = "hello_world_requests_proto";
   private static final String TOPIC_GREETING_SERVICE_RESPONSES_PROTO = "hello_world_responses_proto";
 
   private static final Topic REQUEST_TOPIC_PROTO = Topic.builder().name(TOPIC_GREETING_SERVICE_REQUESTS_PROTO).build();
-  private static final Topic RESPONSE_TOPIC_PROTO = Topic.builder().name(TOPIC_GREETING_SERVICE_RESPONSES_PROTO).build();
-  
-  
+  private static final Topic RESPONSE_TOPIC_PROTO =
+      Topic.builder().name(TOPIC_GREETING_SERVICE_RESPONSES_PROTO).build();
 
 
-  
+
   @Test
   public void test_rabbit_mq_greeting_plain_request_reply() throws Exception {
     // Create Micro-cluster for the api gateway cluster Member
@@ -197,7 +196,7 @@ public class RabbitGatewayIT {
         .subscribe(onNext -> {
           System.out.println(onNext.result());
           assertTrue(onNext.result().equals("Hello joe"));
-          
+
           timeLatch.countDown();
         });
 
@@ -211,7 +210,7 @@ public class RabbitGatewayIT {
     subscription.unsubscribe();
     reqSubscription.unsubscribe();
   }
-  
+
 
   @Test
   public void test_rabbit_mq_greeting_byte_request_reply() throws Exception {
