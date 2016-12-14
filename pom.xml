@@ -10,6 +10,7 @@
 		<rxjava.version>1.1.9</rxjava.version>
 		<protostuff.version>1.5.2</protostuff.version>
 		<netty.version>4.0.40.Final</netty.version>
+		<guava.version>19.0</guava.version>
 	</properties>
 	<dependencies>
 
@@ -68,7 +69,13 @@
 			<artifactId>netty-codec</artifactId>
 			<version>${netty.version}</version>
 		</dependency>
-		
+
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>${guava.version}</version>
+		</dependency>
+
 		<!-- https://mvnrepository.com/artifact/com.rabbitmq/amqp-client -->
 		<dependency>
 			<groupId>com.rabbitmq</groupId>
