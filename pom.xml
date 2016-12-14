@@ -7,12 +7,7 @@
 	<name>ScaleCube/RabbitMQ</name>
 
 	<dependencies>
-		<dependency>
-			<groupId>io.scalecube</groupId>
-			<artifactId>scalecube-services</artifactId>
-			<version>1.0.2</version>
-		</dependency>
-
+	
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
@@ -45,6 +40,13 @@
 			<version>4.12</version>
 			<scope>test</scope>
 		</dependency>
+			<dependency>
+			<groupId>io.scalecube</groupId>
+			<artifactId>scalecube-services</artifactId>
+			<version>1.0.2</version>
+			<scope>test</scope>
+		</dependency>
+		
 	</dependencies>
 
 	<distributionManagement>
