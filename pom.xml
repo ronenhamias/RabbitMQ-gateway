@@ -9,7 +9,7 @@
 	<properties>
 		<rxjava.version>1.1.9</rxjava.version>
 		<protostuff.version>1.5.2</protostuff.version>
-
+		<netty.version>4.0.40.Final</netty.version>
 	</properties>
 	<dependencies>
 
@@ -31,7 +31,7 @@
 			<artifactId>protostuff-json</artifactId>
 			<version>${protostuff.version}</version>
 		</dependency>
-		
+
 		<!-- https://mvnrepository.com/artifact/com.dyuproject.protostuff/protostuff-json -->
 		<dependency>
 			<groupId>io.protostuff</groupId>
@@ -50,19 +50,25 @@
 			<artifactId>protostuff-core</artifactId>
 			<version>${protostuff.version}</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>io.protostuff</groupId>
 			<artifactId>protostuff-runtime-registry</artifactId>
 			<version>${protostuff.version}</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>io.protostuff</groupId>
 			<artifactId>protostuff-collectionschema</artifactId>
 			<version>${protostuff.version}</version>
 		</dependency>
 
+		<dependency>
+			<groupId>io.netty</groupId>
+			<artifactId>netty-codec</artifactId>
+			<version>${netty.version}</version>
+		</dependency>
+		
 		<!-- https://mvnrepository.com/artifact/com.rabbitmq/amqp-client -->
 		<dependency>
 			<groupId>com.rabbitmq</groupId>
