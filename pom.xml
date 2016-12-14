@@ -8,6 +8,8 @@
 
 	<properties>
 		<rxjava.version>1.1.9</rxjava.version>
+		<protostuff.version>1.5.2</protostuff.version>
+
 	</properties>
 	<dependencies>
 
@@ -27,13 +29,38 @@
 		<dependency>
 			<groupId>io.protostuff</groupId>
 			<artifactId>protostuff-json</artifactId>
-			<version>1.5.2</version>
+			<version>${protostuff.version}</version>
 		</dependency>
+		
 		<!-- https://mvnrepository.com/artifact/com.dyuproject.protostuff/protostuff-json -->
 		<dependency>
 			<groupId>io.protostuff</groupId>
 			<artifactId>protostuff-runtime</artifactId>
-			<version>1.5.2</version>
+			<version>${protostuff.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>io.protostuff</groupId>
+			<artifactId>protostuff-api</artifactId>
+			<version>${protostuff.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>io.protostuff</groupId>
+			<artifactId>protostuff-core</artifactId>
+			<version>${protostuff.version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>io.protostuff</groupId>
+			<artifactId>protostuff-runtime-registry</artifactId>
+			<version>${protostuff.version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>io.protostuff</groupId>
+			<artifactId>protostuff-collectionschema</artifactId>
+			<version>${protostuff.version}</version>
 		</dependency>
 
 		<!-- https://mvnrepository.com/artifact/com.rabbitmq/amqp-client -->
