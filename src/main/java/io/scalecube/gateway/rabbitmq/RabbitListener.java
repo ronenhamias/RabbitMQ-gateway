@@ -13,6 +13,7 @@ import rx.subjects.PublishSubject;
 import rx.subjects.Subject;
 
 import java.io.IOException;
+import java.util.concurrent.TimeoutException;
 
 public class RabbitListener {
 
@@ -26,6 +27,17 @@ public class RabbitListener {
 
   private MessageSerialization serialization;
 
+  /**
+   * initialize rabbit mq listener
+   * 
+   * @param host of rabbit broker.
+   * @param port of rabbit mq broker.
+   * @param timeout connection timeout to rabbit mq broker.
+   * @param credentials to rabbit mq broker.
+   * @param serialization to be used when sending messages.
+   * @throws IOException if failed.
+   * @throws TimeoutException if failed.
+   */
   public RabbitListener(String host, int port, int timeout, Credentials credentials, MessageSerialization serialization)
       throws Exception {
     this.factory = new ConnectionFactory();
@@ -56,19 +68,18 @@ public class RabbitListener {
    * Declare an exchange, via an interface that allows the complete set of arguments.
    * 
    * @see com.rabbitmq.client.AMQP.Exchange.Declare
-   * @see com.rabbitmq.client.AMQP.Exchange.DeclareOk
-   * @param exchange the name of the exchange
-   * @param type the exchange type
-   * @param durable true if we are declaring a durable exchange (the exchange will survive a server restart)
-   * @param autoDelete true if the server should delete the exchange when it is no longer in use
-   * @param internal true if the exchange is internal, i.e. can't be directly published to by a client.
-   * @param arguments other properties (construction arguments) for the exchange
-   * @return a declaration-confirm method to indicate the exchange was successfully declared
+   * @see com.rabbitmq.client.AMQP.Exchange.DeclareOk <br>
+   *      exchange the name of the exchange <br>
+   *      type the exchange type <br>
+   *      durable true if we are declaring a durable exchange (the exchange will survive a server restart) <br>
+   *      autoDelete true if the server should delete the exchange when it is no longer in use <br>
+   *      internal true if the exchange is internal, i.e. can't be directly published to by a client. <br>
+   *      arguments other properties (construction arguments) for the exchange
    * @throws java.io.IOException if an error is encountered
    */
   public void subscribe(Exchange exchange, Topic topic, String routingKey) throws Exception {
 
-    channel.exchangeDeclare(exchange.name(),
+    channel.exchangeDeclare(exchange.exchange(),
         exchange.type(),
         exchange.durable(),
         exchange.autoDelete(),
@@ -80,13 +91,19 @@ public class RabbitListener {
         topic.exclusive(),
         topic.autoDelete(), null);
 
-    channel.queueBind(topic.name(), exchange.name(), routingKey);
+    channel.queueBind(topic.name(), exchange.exchange(), routingKey);
 
     final Consumer consumer = createConsumer(channel);
     boolean autoAck = false;
     channel.basicConsume(topic.name(), autoAck, consumer);
   }
 
+  /**
+   * listen on rabbit mq topic.
+   * 
+   * @param topic to subscribe on.
+   * @throws Exception if failed to subscribe.
+   */
   public void subscribe(Topic topic) throws Exception {
     channel.queueDeclare(topic.name(),
         topic.durable(),
@@ -106,9 +123,11 @@ public class RabbitListener {
         try {
           incomingMessagesSubject.onNext(body);
         } catch (Exception e) {
+          // TODO: log exception.
           e.printStackTrace();
         }
         try {
+          // do nothing.
         } finally {
           channel.basicAck(envelope.getDeliveryTag(), false);
         }

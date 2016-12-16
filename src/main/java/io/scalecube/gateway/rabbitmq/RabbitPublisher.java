@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.util.concurrent.TimeoutException;
 
 /**
- * Created by noam on 11/12/16.
+ * Publisher to rabbit mq messages.
  */
 public class RabbitPublisher {
 
@@ -25,6 +25,17 @@ public class RabbitPublisher {
 
   private MessageSerialization serialization;
 
+  /**
+   * initialize rabbit mq publisher
+   * 
+   * @param host of rabbit broker.
+   * @param port of rabbit mq broker.
+   * @param timeout connection timeout to rabbit mq broker.
+   * @param credentials to rabbit mq broker.
+   * @param serialization to be used when sending messages.
+   * @throws IOException if failed.
+   * @throws TimeoutException if failed.
+   */
   public RabbitPublisher(String host, int port, int timeout, Credentials credentials,
       MessageSerialization serialization) throws IOException, TimeoutException {
     this.factory = new ConnectionFactory();
@@ -51,9 +62,15 @@ public class RabbitPublisher {
     this.outboundMessagesSubject = PublishSubject.<byte[]>create().toSerialized();
   }
 
+  /**
+   * subscribe to rabbit mq exchange.
+   * 
+   * @param exchange to subscribe.
+   * @throws Exception if failed.
+   */
   public void subscribe(Exchange exchange) throws Exception {
 
-    channel.exchangeDeclare(exchange.name(),
+    channel.exchangeDeclare(exchange.exchange(),
         exchange.type(),
         exchange.durable(),
         exchange.autoDelete(),

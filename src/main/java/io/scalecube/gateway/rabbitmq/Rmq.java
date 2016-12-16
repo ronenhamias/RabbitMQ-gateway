@@ -1,13 +1,14 @@
 package io.scalecube.gateway.rabbitmq;
 
-import com.rabbitmq.client.AMQP;
 import io.scalecube.gateway.rabbitmq.serialization.proto.JsonMessageSerialization;
 import io.scalecube.gateway.rabbitmq.serialization.proto.ProtoMessageSerialization;
 import io.scalecube.gateway.rabbitmq.serialization.text.PlainMessageSeriazliation;
 
+import com.rabbitmq.client.AMQP;
+
 import rx.Observable;
 
-public class RMQ {
+public class Rmq {
 
   private RabbitPublisher publisher;
   private RabbitListener listener;
@@ -68,8 +69,8 @@ public class RMQ {
       return this;
     }
 
-    public RMQ build() throws Exception {
-      return new RMQ(
+    public Rmq build() throws Exception {
+      return new Rmq(
           new RabbitListener(this.host, this.port, this.timeout, this.credentials, this.serialization),
           new RabbitPublisher(this.host, this.port, this.timeout, this.credentials, this.serialization),
           this.serialization);
@@ -91,7 +92,7 @@ public class RMQ {
     }
   }
 
-  private RMQ(RabbitListener rabbitListener, RabbitPublisher rabbitPublisher, MessageSerialization serialization) {
+  private Rmq(RabbitListener rabbitListener, RabbitPublisher rabbitPublisher, MessageSerialization serialization) {
     this.listener = rabbitListener;
     this.publisher = rabbitPublisher;
     this.rmqSerialization = serialization;
@@ -101,12 +102,12 @@ public class RMQ {
     return new Builder();
   }
 
-  public RMQ topic(Topic topic) throws Exception {
+  public Rmq topic(Topic topic) throws Exception {
     listener.subscribe(topic);
     return this;
   }
 
-  public RMQ exchange(Exchange exchange, Topic topic, String routingKey) throws Exception {
+  public Rmq exchange(Exchange exchange, Topic topic, String routingKey) throws Exception {
     listener.subscribe(exchange, topic, routingKey);
     return this;
   }
@@ -119,6 +120,14 @@ public class RMQ {
     return listener.listen();
   }
 
+  /**
+   * publish message to queue.
+   * 
+   * @param topic to publish.
+   * @param obj the message to publish
+   * @throws Exception exception if failed.
+   */
+
   public <T> void publish(Topic topic, Object obj) throws Exception {
     publisher.channel().basicPublish(topic.exchange(), topic.name(),
         topic.properties(),
@@ -126,8 +135,16 @@ public class RMQ {
             (Class<T>) obj.getClass()));
   }
 
+  /**
+   * publish message to exchange.
+   * 
+   * @param exchange Exchange to publish.
+   * @param routingKey routing key to be used.
+   * @param obj the message to publish
+   * @throws Exception exception if failed.
+   */
   public <T> void publish(Exchange exchange, String routingKey, Object obj) throws Exception {
-    publisher.channel().basicPublish(exchange.name(), routingKey,
+    publisher.channel().basicPublish(exchange.exchange(), routingKey,
         new AMQP.BasicProperties.Builder()
             .deliveryMode(1) // transient
             .build(),

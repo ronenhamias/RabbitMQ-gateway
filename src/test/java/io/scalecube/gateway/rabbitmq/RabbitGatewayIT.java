@@ -70,7 +70,7 @@ public class RabbitGatewayIT {
         .create();
 
     // RabbitMQ API Gateway.
-    RMQ serviceQueue = RMQ.builder().plain().host("localhost").build();
+    Rmq serviceQueue = Rmq.builder().plain().host("localhost").build();
 
     serviceQueue.topic(REQUEST_TOPIC_PLAIN)
         .listen(String.class).subscribe(onNext -> {
@@ -85,7 +85,7 @@ public class RabbitGatewayIT {
     CountDownLatch timeLatch = new CountDownLatch(1);
 
     // RabbitMQ service client.
-    RMQ publisher = RMQ.builder().plain().host("localhost").build();
+    Rmq publisher = Rmq.builder().plain().host("localhost").build();
 
     publisher.topic(RESPONSE_TOPIC_PLAIN)
         .listen(String.class).subscribe(onNext -> {
@@ -123,7 +123,7 @@ public class RabbitGatewayIT {
         .create();
 
     // RabbitMQ API Gateway.
-    RMQ publisher = RMQ.builder().proto().host("localhost").build();
+    Rmq publisher = Rmq.builder().proto().host("localhost").build();
 
 
     publisher.topic(REQUEST_TOPIC_PROTO)
@@ -138,7 +138,7 @@ public class RabbitGatewayIT {
 
 
     CountDownLatch timeLatch = new CountDownLatch(1);
-    RMQ responseSubscriber = RMQ.builder().proto().host("localhost").build();
+    Rmq responseSubscriber = Rmq.builder().proto().host("localhost").build();
     responseSubscriber.topic(RESPONSE_TOPIC_PROTO).listen(GreetingResponse.class)
         .subscribe(onNext -> {
           System.out.println(onNext.result());
@@ -176,7 +176,7 @@ public class RabbitGatewayIT {
         .create();
 
     // RabbitMQ API Gateway.
-    RMQ publisher = RMQ.builder().host("localhost").json().build();
+    Rmq publisher = Rmq.builder().host("localhost").json().build();
 
 
     Subscription reqSubscription = publisher.topic(REQUEST_TOPIC_JSON)
@@ -191,7 +191,7 @@ public class RabbitGatewayIT {
 
 
     CountDownLatch timeLatch = new CountDownLatch(1);
-    RMQ responseSubscriber = RMQ.builder().json().host("localhost").build();
+    Rmq responseSubscriber = Rmq.builder().json().host("localhost").build();
     Subscription subscription = responseSubscriber.topic(RESPONSE_TOPIC_JSON).listen(GreetingResponse.class)
         .subscribe(onNext -> {
           System.out.println(onNext.result());
@@ -234,7 +234,7 @@ public class RabbitGatewayIT {
         .create();
 
     // RabbitMQ API Gateway.
-    RMQ consumer = RMQ.builder().host("localhost").build();
+    Rmq consumer = Rmq.builder().host("localhost").build();
 
     consumer.topic(REQUEST_TOPIC_BYTES).listen().subscribe(onNext -> {
 
@@ -250,7 +250,7 @@ public class RabbitGatewayIT {
     CountDownLatch timeLatch = new CountDownLatch(1);
     long start = System.currentTimeMillis();
     // RabbitMQ service client.
-    RMQ publisher = RMQ.builder().host("localhost").build();
+    Rmq publisher = Rmq.builder().host("localhost").build();
     publisher.topic(RESPONSE_TOPIC_BYTES).listen().subscribe(onNext -> {
       System.out.println("RMQ response " + new String(onNext));
       assertTrue(new String(onNext).equals("Hello joe"));
@@ -285,7 +285,7 @@ public class RabbitGatewayIT {
         .create();
 
     // RabbitMQ API Gateway.
-    RMQ serviceQueue = RMQ.builder().plain().host("localhost").build();
+    Rmq serviceQueue = Rmq.builder().plain().host("localhost").build();
 
     Exchange exchange = Exchange.builder().name("in").build();
 
@@ -304,7 +304,7 @@ public class RabbitGatewayIT {
     CountDownLatch timeLatch = new CountDownLatch(1);
     long start = System.currentTimeMillis();
     // RabbitMQ service client.
-    RMQ publisher = RMQ.builder().plain().host("localhost").build();
+    Rmq publisher = Rmq.builder().plain().host("localhost").build();
 
     publisher.topic(RESPONSE_TOPIC_PLAIN).listen(String.class)
         .subscribe(onNext -> {

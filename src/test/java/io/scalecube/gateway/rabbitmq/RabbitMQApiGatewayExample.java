@@ -4,8 +4,6 @@ import io.scalecube.examples.services.GreetingService;
 import io.scalecube.examples.services.GreetingServiceImpl;
 import io.scalecube.services.Microservices;
 
-import java.io.InputStream;
-import java.io.ObjectOutputStream;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
@@ -58,7 +56,7 @@ public class RabbitMQApiGatewayExample {
         .create();
 
     // RabbitMQ API Gateway.
-    RMQ serviceQueue = RMQ.builder().plain().host("localhost").build();
+    Rmq serviceQueue = Rmq.builder().plain().host("localhost").build();
 
     serviceQueue.topic(REQUEST_TOPIC)
         .listen(String.class).subscribe(onNext -> {
@@ -75,7 +73,7 @@ public class RabbitMQApiGatewayExample {
     CountDownLatch timeLatch = new CountDownLatch(10000);
     long start = System.currentTimeMillis();
     // RabbitMQ service client.
-    RMQ publisher = RMQ.builder().plain().host("localhost").build();
+    Rmq publisher = Rmq.builder().plain().host("localhost").build();
 
     publisher.topic(RESPONSE_TOPIC).listen(String.class).subscribe(onNext -> {
       System.out.println(onNext + timeLatch.getCount());

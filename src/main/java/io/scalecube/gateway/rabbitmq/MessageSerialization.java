@@ -6,6 +6,11 @@ public interface MessageSerialization {
 
   public <T> byte[] serialize(T value, Class<T> clazz) throws Exception;
 
+  /**
+   * empty message seriazliation returns the original byte array data.
+   * 
+   * @return original byte[] data.
+   */
   public static MessageSerialization empty() {
     return new MessageSerialization() {
 

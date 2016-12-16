@@ -5,13 +5,6 @@ import com.rabbitmq.client.MessageProperties;
 
 public class Topic {
 
-  /**
-   * @param durable true if we are declaring a durable queue (the queue will survive a server restart)
-   * @param exclusive true if we are declaring an exclusive queue (restricted to this connection)
-   * @param autoDelete true if we are declaring an autodelete queue (server will delete it when no longer in use)
-   * @param arguments other properties (construction arguments) for the queue
-   */
-
   private String name;
   private boolean durable = true;
   private boolean autoDelete = false;
@@ -28,16 +21,27 @@ public class Topic {
     return name;
   }
 
-  // durable true if we are declaring a durable queue (the queue will survive a server restart)
+  /**
+   * @param durable true if we are declaring a durable queue (the queue will survive a server restart)
+   * @return true if durable.
+   */
   public boolean durable() {
     return durable;
   }
 
-  // autoDelete true if we are declaring an autodelete queue (server will delete it when no longer in use)
+  /**
+   * autoDelete true if we are declaring an autodelete queue (server will delete it when no longer in use)
+   * 
+   * @return true if autoDelete.
+   */
   public boolean autoDelete() {
     return autoDelete;
   }
 
+  /**
+   * @param exclusive true if we are declaring an exclusive queue (restricted to this connection)
+   * @return true if exclusive.
+   */
   public boolean exclusive() {
     return exclusive;
   }

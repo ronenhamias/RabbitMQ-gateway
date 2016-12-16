@@ -2,11 +2,12 @@ package io.scalecube.gateway.rabbitmq;
 
 import java.util.Map;
 
+/**
+ * Declare an exchange, via an interface that allows the complete set of arguments.
+ */
 public class Exchange {
 
-
-
-  private String name;
+  private String exchange;
   private String type = "direct";
   private boolean durable = true;
   private boolean autoDelete = false;
@@ -23,13 +24,10 @@ public class Exchange {
    * @param durable true if we are declaring a durable exchange (the exchange will survive a server restart)
    * @param autoDelete true if the server should delete the exchange when it is no longer in use
    * @param internal true if the exchange is internal, i.e. can't be directly published to by a client.
-   * @param arguments other properties (construction arguments) for the exchange
-   * @return a declaration-confirm method to indicate the exchange was successfully declared
-   * @throws java.io.IOException if an error is encountered
    */
-  public Exchange(String name, String type, boolean durable, boolean autoDelete, boolean internal,
+  public Exchange(String exchange, String type, boolean durable, boolean autoDelete, boolean internal,
       Map<String, Object> properties) {
-    this.name = name;
+    this.exchange = exchange;
     this.type = type;
     this.durable = durable;
     this.autoDelete = autoDelete;
@@ -37,8 +35,8 @@ public class Exchange {
     this.properties = properties;
   }
 
-  public String name() {
-    return name;
+  public String exchange() {
+    return exchange;
   }
 
   // durable true if we are declaring a durable queue (the queue will survive a server restart)
@@ -98,6 +96,11 @@ public class Exchange {
       return this;
     }
 
+    /**
+     * Builder for RabbitMQ exchange.
+     * 
+     * @return Exchange instance.
+     */
     public Exchange build() {
       return new Exchange(this.name,
           this.type,
