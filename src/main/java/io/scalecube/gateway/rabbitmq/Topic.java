@@ -12,9 +12,10 @@ public class Topic {
   private BasicProperties properties = MessageProperties.PERSISTENT_TEXT_PLAIN;
   private String exchange = "";
 
-  public Topic(String name, String exchange) {
+  public Topic(String name, String exchange, Boolean durable) {
     this.name = name;
     this.exchange = exchange;
+    this.durable = durable;
   }
 
   public String name() {
@@ -22,7 +23,6 @@ public class Topic {
   }
 
   /**
-   * @param durable true if we are declaring a durable queue (the queue will survive a server restart)
    * @return true if durable.
    */
   public boolean durable() {
@@ -39,7 +39,6 @@ public class Topic {
   }
 
   /**
-   * @param exclusive true if we are declaring an exclusive queue (restricted to this connection)
    * @return true if exclusive.
    */
   public boolean exclusive() {
@@ -53,11 +52,17 @@ public class Topic {
   public static class Builder {
 
     private String name;
+    private Boolean durable;
 
     private String exchange = "";
 
     public Builder name(String name) {
       this.name = name;
+      return this;
+    }
+
+    public Builder durable(Boolean durable) {
+      this.durable = durable;
       return this;
     }
 
@@ -67,12 +72,14 @@ public class Topic {
     }
 
     public Topic build() {
-      return new Topic(this.name, this.exchange);
+      return new Topic(this.name, this.exchange, this.durable);
     }
 
     public Topic create() {
       return build();
     }
+
+
   }
 
   public BasicProperties properties() {
