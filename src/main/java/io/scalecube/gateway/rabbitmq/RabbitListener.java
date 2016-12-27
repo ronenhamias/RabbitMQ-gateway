@@ -15,7 +15,7 @@ import rx.subjects.Subject;
 import java.io.IOException;
 import java.util.concurrent.TimeoutException;
 
-public class RabbitListener {
+public class RabbitListener implements AutoCloseable {
 
   private final ConnectionFactory factory;
 
@@ -159,4 +159,13 @@ public class RabbitListener {
   }
 
 
+  @Override
+  public void close() throws Exception {
+    if (this.channel != null) {
+      this.channel.close();
+    }
+    if (this.connection != null) {
+      this.connection.close();
+    }
+  }
 }

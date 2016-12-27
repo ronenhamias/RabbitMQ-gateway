@@ -13,7 +13,7 @@ import java.util.concurrent.TimeoutException;
 /**
  * Publisher to rabbit mq messages.
  */
-public class RabbitPublisher {
+public class RabbitPublisher implements AutoCloseable{
 
   private final ConnectionFactory factory;
 
@@ -80,5 +80,15 @@ public class RabbitPublisher {
 
   public Channel channel() {
     return this.channel;
+  }
+
+  @Override
+  public void close() throws Exception {
+    if (this.channel != null) {
+      this.channel.close();
+    }
+    if (this.connection != null) {
+      this.connection.close();
+    }
   }
 }
