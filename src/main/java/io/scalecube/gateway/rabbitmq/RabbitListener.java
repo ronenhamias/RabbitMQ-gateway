@@ -94,7 +94,7 @@ public class RabbitListener implements AutoCloseable {
     channel.queueBind(topic.name(), exchange.exchange(), routingKey);
 
     final Consumer consumer = createConsumer(channel);
-    boolean autoAck = false;
+    boolean autoAck = true;
     channel.basicConsume(topic.name(), autoAck, consumer);
   }
 
@@ -111,7 +111,7 @@ public class RabbitListener implements AutoCloseable {
         topic.autoDelete(), null);
 
     final Consumer consumer = createConsumer(channel);
-    boolean autoAck = false;
+    boolean autoAck = true;
     channel.basicConsume(topic.name(), autoAck, consumer);
   }
 
@@ -125,11 +125,6 @@ public class RabbitListener implements AutoCloseable {
         } catch (Exception e) {
           // TODO: log exception.
           e.printStackTrace();
-        }
-        try {
-          // do nothing.
-        } finally {
-          channel.basicAck(envelope.getDeliveryTag(), false);
         }
       }
     };
