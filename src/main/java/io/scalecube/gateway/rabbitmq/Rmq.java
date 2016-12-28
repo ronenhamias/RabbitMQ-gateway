@@ -8,11 +8,12 @@ import com.rabbitmq.client.AMQP;
 
 import rx.Observable;
 
-public class Rmq {
+public class Rmq implements AutoCloseable {
 
   private RabbitPublisher publisher;
   private RabbitListener listener;
   private MessageSerialization rmqSerialization;
+
 
   public static class Builder {
 
@@ -152,5 +153,11 @@ public class Rmq {
             (Class<T>) obj.getClass()));
   }
 
+
+  @Override
+  public void close() throws Exception {
+    this.listener.close();
+    this.publisher.close();
+  }
 
 }

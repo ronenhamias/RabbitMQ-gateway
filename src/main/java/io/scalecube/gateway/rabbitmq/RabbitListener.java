@@ -15,7 +15,7 @@ import rx.subjects.Subject;
 import java.io.IOException;
 import java.util.concurrent.TimeoutException;
 
-public class RabbitListener {
+public class RabbitListener implements AutoCloseable {
 
   private final ConnectionFactory factory;
 
@@ -94,7 +94,7 @@ public class RabbitListener {
     channel.queueBind(topic.name(), exchange.exchange(), routingKey);
 
     final Consumer consumer = createConsumer(channel);
-    boolean autoAck = false;
+    boolean autoAck = true;
     channel.basicConsume(topic.name(), autoAck, consumer);
   }
 
@@ -111,7 +111,7 @@ public class RabbitListener {
         topic.autoDelete(), null);
 
     final Consumer consumer = createConsumer(channel);
-    boolean autoAck = false;
+    boolean autoAck = true;
     channel.basicConsume(topic.name(), autoAck, consumer);
   }
 
@@ -125,11 +125,6 @@ public class RabbitListener {
         } catch (Exception e) {
           // TODO: log exception.
           e.printStackTrace();
-        }
-        try {
-          // do nothing.
-        } finally {
-          channel.basicAck(envelope.getDeliveryTag(), false);
         }
       }
     };
@@ -159,4 +154,13 @@ public class RabbitListener {
   }
 
 
+  @Override
+  public void close() throws Exception {
+    if (this.channel != null) {
+      this.channel.close();
+    }
+    if (this.connection != null) {
+      this.connection.close();
+    }
+  }
 }
