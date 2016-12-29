@@ -15,7 +15,7 @@ import rx.Subscription;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
-public class RabbitGatewayIT {
+public class RabbitGatewayTest {
 
   private static final String TOPIC_GREETING_SERVICE_REQUESTS_BYTES = "hello_world_requests_bytes";
   private static final String TOPIC_GREETING_SERVICE_RESPONSES_BYTES = "hello_world_responses_bytes";
