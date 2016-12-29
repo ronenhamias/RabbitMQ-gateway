@@ -52,7 +52,7 @@ public class Topic {
   public static class Builder {
 
     private String name;
-    private Boolean durable;
+    private Boolean durable = true;
 
     private String exchange = "";
 
