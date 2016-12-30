@@ -6,6 +6,13 @@
 	<version>1.0.0-SNAPSHOT</version>
 	<name>ScaleCube/RabbitMQ</name>
 
+	<description>
+        ScaleCube is a lightweight decentralized cluster membership, failure detection, messaging and
+        gossip protocol library for the Java VM.
+    </description>
+    <inceptionYear>2015</inceptionYear>
+    <url>http://scalecube.io</url>
+	
 	<licenses>
 		<license>
 			<name>The Apache License, Version 2.0</name>
