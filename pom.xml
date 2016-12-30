@@ -10,6 +10,7 @@
 		<protostuff.version>1.5.2</protostuff.version>
 		<netty.version>4.0.40.Final</netty.version>
 		<guava.version>19.0</guava.version>
+		<scalecube.version>1.0.3</scalecube.version>
 	</properties>
 
 	<dependencies>
@@ -92,7 +93,7 @@
 		<dependency>
 			<groupId>io.scalecube</groupId>
 			<artifactId>scalecube-services</artifactId>
-			<version>1.0.2</version>
+			<version>${scalecube.version}</version>
 			<scope>test</scope>
 		</dependency>
 
