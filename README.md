@@ -1,3 +1,5 @@
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/48e0f5d4f9b64924bccafadf562697f3)](https://www.codacy.com/app/ronenn/RabbitMQ?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=scalecube/RabbitMQ&amp;utm_campaign=Badge_Grade)
+
 # RabbitMQ
 RabbitMQ integration with scalecube services
 
