@@ -2,8 +2,6 @@ package io.scalecube.gateway.rabbitmq.serialization.proto;
 
 import io.scalecube.gateway.rabbitmq.MessageSerialization;
 
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
 import io.netty.handler.codec.DecoderException;
 import io.netty.handler.codec.EncoderException;
 import io.protostuff.JsonIOUtil;
@@ -19,7 +17,6 @@ public class JsonMessageSerialization implements MessageSerialization {
 
     Schema<T> schema = SchemaCache.getOrCreate(clazz);
     T message = schema.newMessage();
-    ByteBuf bb = Unpooled.copiedBuffer(data, 0, data.length);
 
     try {
       JsonIOUtil.mergeFrom(data, message, schema, false);
@@ -42,11 +39,6 @@ public class JsonMessageSerialization implements MessageSerialization {
         throw new EncoderException(e.getMessage(), e);
       }
     }
-  }
-
-
-  public <T> byte[] serialize(Object value) throws Exception {
-    return null;
   }
 
 }
