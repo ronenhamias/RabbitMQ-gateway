@@ -14,8 +14,6 @@ import java.util.concurrent.TimeoutException;
  */
 public class RabbitPublisher implements AutoCloseable{
 
-  private final ConnectionFactory factory;
-
   private final Connection connection;
 
   private final Channel channel;
@@ -33,20 +31,20 @@ public class RabbitPublisher implements AutoCloseable{
    */
   public RabbitPublisher(String host, int port, int timeout, Credentials credentials,
       MessageSerialization serialization) throws IOException, TimeoutException {
-    this.factory = new ConnectionFactory();
-    this.factory.setHost(host);
+    final ConnectionFactory factory = new ConnectionFactory();
+    factory.setHost(host);
 
     if (port != -1) {
-      this.factory.setPort(port);
+      factory.setPort(port);
     }
 
-    this.factory.setConnectionTimeout(timeout);
+    factory.setConnectionTimeout(timeout);
 
     if (credentials != null) {
       if (credentials instanceof BasicCredentials) {
         BasicCredentials basic = (BasicCredentials) credentials;
-        this.factory.setUsername(basic.username());
-        this.factory.setPassword(basic.password());
+        factory.setUsername(basic.username());
+        factory.setPassword(basic.password());
       }
     }
 

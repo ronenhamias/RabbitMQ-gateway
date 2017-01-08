@@ -17,7 +17,7 @@ import java.util.concurrent.TimeoutException;
 
 public class RabbitListener implements AutoCloseable {
 
-  private final ConnectionFactory factory;
+
 
   private final Connection connection;
 
@@ -40,22 +40,24 @@ public class RabbitListener implements AutoCloseable {
    */
   public RabbitListener(String host, int port, int timeout, Credentials credentials, MessageSerialization serialization)
       throws Exception {
-    this.factory = new ConnectionFactory();
+    
+    final ConnectionFactory factory = new ConnectionFactory();
+    
     this.serialization = serialization;
 
-    this.factory.setHost(host);
+    factory.setHost(host);
 
     if (port != -1) {
-      this.factory.setPort(port);
+      factory.setPort(port);
     }
 
-    this.factory.setConnectionTimeout(timeout);
+    factory.setConnectionTimeout(timeout);
 
     if (credentials != null) {
       if (credentials instanceof BasicCredentials) {
         BasicCredentials basic = (BasicCredentials) credentials;
-        this.factory.setUsername(basic.username());
-        this.factory.setPassword(basic.password());
+        factory.setUsername(basic.username());
+        factory.setPassword(basic.password());
       }
     }
 
