@@ -37,13 +37,13 @@ public class RabbitPublisher implements AutoCloseable {
 
     factory.setConnectionTimeout(timeout);
 
-    if (credentials != null) {
-      if (credentials instanceof BasicCredentials) {
-        BasicCredentials basic = (BasicCredentials) credentials;
-        factory.setUsername(basic.username());
-        factory.setPassword(basic.password());
-      }
+
+    if (credentials != null && credentials instanceof BasicCredentials) {
+      BasicCredentials basic = (BasicCredentials) credentials;
+      factory.setUsername(basic.username());
+      factory.setPassword(basic.password());
     }
+
 
     this.connection = factory.newConnection();
     this.channel = connection.createChannel();

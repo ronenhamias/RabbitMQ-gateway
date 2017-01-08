@@ -40,9 +40,9 @@ public class RabbitListener implements AutoCloseable {
    */
   public RabbitListener(String host, int port, int timeout, Credentials credentials, MessageSerialization serialization)
       throws Exception {
-    
+
     final ConnectionFactory factory = new ConnectionFactory();
-    
+
     this.serialization = serialization;
 
     factory.setHost(host);
@@ -53,13 +53,13 @@ public class RabbitListener implements AutoCloseable {
 
     factory.setConnectionTimeout(timeout);
 
-    if (credentials != null) {
-      if (credentials instanceof BasicCredentials) {
-        BasicCredentials basic = (BasicCredentials) credentials;
-        factory.setUsername(basic.username());
-        factory.setPassword(basic.password());
-      }
+
+    if (credentials != null && credentials instanceof BasicCredentials) {
+      BasicCredentials basic = (BasicCredentials) credentials;
+      factory.setUsername(basic.username());
+      factory.setPassword(basic.password());
     }
+
 
     this.connection = factory.newConnection();
     this.channel = connection.createChannel();
