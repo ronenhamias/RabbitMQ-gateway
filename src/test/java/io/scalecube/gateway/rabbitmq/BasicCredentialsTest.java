@@ -8,10 +8,10 @@ public class BasicCredentialsTest {
 
   @Test
   public void test_basic_cred() {
-    
+
     BasicCredentials cred = new BasicCredentials("username", "password");
-    assertEquals( cred.password(), "password");
-    assertEquals( cred.username(), "username");
-    
+    assertEquals(cred.password(), "password");
+    assertEquals(cred.username(), "username");
+
   }
 }
