@@ -7,7 +7,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class SchemaCache {
 
-  static final ConcurrentHashMap<Class, Schema> schemaCache = new ConcurrentHashMap<>();
+  private static final ConcurrentHashMap<Class, Schema> schemaCache = new ConcurrentHashMap<>();
 
   public static <T> Schema<T> getOrCreate(Class<T> clazz) {
     return schemaCache.computeIfAbsent(clazz, item -> compute(clazz));

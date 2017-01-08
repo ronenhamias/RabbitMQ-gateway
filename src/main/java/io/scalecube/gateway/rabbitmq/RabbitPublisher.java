@@ -5,7 +5,6 @@ import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
 
 import rx.subjects.PublishSubject;
-import rx.subjects.Subject;
 
 import java.io.IOException;
 import java.util.concurrent.TimeoutException;
@@ -17,13 +16,9 @@ public class RabbitPublisher implements AutoCloseable{
 
   private final ConnectionFactory factory;
 
-  final Connection connection;
+  private final Connection connection;
 
-  final Channel channel;
-
-  private final Subject<byte[], byte[]> outboundMessagesSubject;
-
-  private MessageSerialization serialization;
+  private final Channel channel;
 
   /**
    * initialize rabbit mq publisher
@@ -39,8 +34,6 @@ public class RabbitPublisher implements AutoCloseable{
   public RabbitPublisher(String host, int port, int timeout, Credentials credentials,
       MessageSerialization serialization) throws IOException, TimeoutException {
     this.factory = new ConnectionFactory();
-    this.serialization = serialization;
-
     this.factory.setHost(host);
 
     if (port != -1) {
@@ -59,7 +52,7 @@ public class RabbitPublisher implements AutoCloseable{
 
     this.connection = factory.newConnection();
     this.channel = connection.createChannel();
-    this.outboundMessagesSubject = PublishSubject.<byte[]>create().toSerialized();
+    PublishSubject.<byte[]>create().toSerialized();
   }
 
   /**

@@ -19,13 +19,13 @@ public class RabbitListener implements AutoCloseable {
 
   private final ConnectionFactory factory;
 
-  final Connection connection;
+  private final Connection connection;
 
-  final Channel channel;
+  private final Channel channel;
 
   private final Subject<byte[], byte[]> incomingMessagesSubject;
 
-  private MessageSerialization serialization;
+  private final MessageSerialization serialization;
 
   /**
    * initialize rabbit mq listener
