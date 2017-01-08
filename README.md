@@ -1,6 +1,5 @@
 [![Build Status](https://travis-ci.org/scalecube/RabbitMQ.svg?branch=master)](https://travis-ci.org/scalecube/RabbitMQ)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.scalecube/scalecube-rabbitmq/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.scalecube/scalecube-rabbitmq)
-
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/48e0f5d4f9b64924bccafadf562697f3)](https://www.codacy.com/app/ronenn/RabbitMQ?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=scalecube/RabbitMQ&amp;utm_campaign=Badge_Grade)
 [![codecov](https://codecov.io/gh/scalecube/RabbitMQ/branch/master/graph/badge.svg)](https://codecov.io/gh/scalecube/RabbitMQ)
 
