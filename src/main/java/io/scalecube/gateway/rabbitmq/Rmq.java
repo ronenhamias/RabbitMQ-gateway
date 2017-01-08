@@ -73,7 +73,7 @@ public class Rmq implements AutoCloseable {
     public Rmq build() throws Exception {
       return new Rmq(
           new RabbitListener(this.host, this.port, this.timeout, this.credentials, this.serialization),
-          new RabbitPublisher(this.host, this.port, this.timeout, this.credentials, this.serialization),
+          new RabbitPublisher(this.host, this.port, this.timeout, this.credentials),
           this.serialization);
     }
 

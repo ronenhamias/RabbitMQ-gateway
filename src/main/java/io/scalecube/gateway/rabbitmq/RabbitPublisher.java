@@ -29,8 +29,7 @@ public class RabbitPublisher implements AutoCloseable{
    * @throws IOException if failed.
    * @throws TimeoutException if failed.
    */
-  public RabbitPublisher(String host, int port, int timeout, Credentials credentials,
-      MessageSerialization serialization) throws IOException, TimeoutException {
+  public RabbitPublisher(String host, int port, int timeout, Credentials credentials) throws IOException, TimeoutException {
     final ConnectionFactory factory = new ConnectionFactory();
     factory.setHost(host);
 
@@ -50,7 +49,6 @@ public class RabbitPublisher implements AutoCloseable{
 
     this.connection = factory.newConnection();
     this.channel = connection.createChannel();
-    PublishSubject.<byte[]>create().toSerialized();
   }
 
   /**
