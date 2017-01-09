@@ -2,7 +2,6 @@ package io.scalecube.gateway.rabbitmq.serialization.proto;
 
 import io.scalecube.gateway.rabbitmq.MessageSerialization;
 
-import io.netty.handler.codec.DecoderException;
 import io.protostuff.JsonIOUtil;
 import io.protostuff.Schema;
 
@@ -15,11 +14,7 @@ public class JsonMessageSerialization implements MessageSerialization {
     Schema<T> schema = SchemaCache.getOrCreate(clazz);
     T message = schema.newMessage();
 
-    try {
-      JsonIOUtil.mergeFrom(data, message, schema, false);
-    } catch (Exception e) {
-      throw new DecoderException(e.getMessage(), e);
-    }
+    JsonIOUtil.mergeFrom(data, message, schema, false);
 
     return message;
   }
