@@ -5,6 +5,8 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
+import java.util.HashMap;
+
 public class RabbitPublisherTest {
 
   @Test
@@ -39,7 +41,13 @@ public class RabbitPublisherTest {
 
     try {
       RabbitPublisher publisher = new RabbitPublisher("localhost", -1, 1000, null);
-      publisher.subscribe(Exchange.builder().name("in").build());
+      publisher.subscribe(Exchange.builder()
+          .durable(false)
+          .autoDelete(false)
+          .internal(false)
+          .type("direct")
+          .name("in")
+          .properties(new HashMap<>()).build());
       assertTrue(publisher.channel().isOpen());
       publisher.close();
       assertTrue(!publisher.channel().isOpen());
