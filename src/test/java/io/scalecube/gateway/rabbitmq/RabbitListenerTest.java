@@ -14,6 +14,7 @@ public class RabbitListenerTest {
     try {
       new RabbitListener("localhost", 5672, 3, null, MessageSerialization.empty());
     } catch (Exception e) {
+      e.printStackTrace();
       if(e instanceof SocketTimeoutException) {
         System.out.println(e.getStackTrace());
         assertEquals(e.getMessage().toString(), "connect timed out");
