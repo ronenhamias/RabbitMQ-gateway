@@ -5,6 +5,8 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
+import java.net.SocketTimeoutException;
+
 public class RabbitListenerTest {
 
   @Test
@@ -12,7 +14,10 @@ public class RabbitListenerTest {
     try {
       new RabbitListener("localhost", 5672, 3, null, MessageSerialization.empty());
     } catch (Exception e) {
-      assertEquals(e.getMessage().toString(), "connect timed out");
+      if(e instanceof SocketTimeoutException) {
+        System.out.println(e.getStackTrace());
+        assertEquals(e.getMessage().toString(), "connect timed out");
+      }
     }
 
     try {
