@@ -30,8 +30,17 @@ public class RabbitPublisherTest {
     try {
       Credentials cred = new Credentials(){};
       RabbitPublisher publisher = new RabbitPublisher("localhost", -1, 1000, cred);
+      
     } catch (Exception e) {
       assertEquals(e.getMessage().toString(),
+          "ACCESS_REFUSED - Login was refused using authentication mechanism PLAIN. For details see the broker logfile.");
+    }
+   
+    try {
+      RabbitPublisher publisher = new RabbitPublisher("localhost", -1, 1000, new BasicCredentials("a", "b"));
+      publisher.subscribe(Exchange.builder().build());
+    } catch (Exception ex) {
+      assertEquals(ex.getMessage().toString(),
           "ACCESS_REFUSED - Login was refused using authentication mechanism PLAIN. For details see the broker logfile.");
     }
     
