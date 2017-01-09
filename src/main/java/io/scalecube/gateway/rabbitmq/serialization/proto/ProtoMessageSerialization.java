@@ -26,12 +26,9 @@ public class ProtoMessageSerialization implements MessageSerialization {
 
   @Override
   public <T> byte[] serialize(T value, Class<T> clazz) throws Exception {
-
     Schema<T> schema = SchemaCache.getOrCreate(clazz);
-
-    try (RecyclableLinkedBuffer rlb = recyclableLinkedBuffer.get()) {
-      return ProtostuffIOUtil.toByteArray(value, schema, rlb.buffer());
-    }
+    RecyclableLinkedBuffer rlb = recyclableLinkedBuffer.get();
+    return ProtostuffIOUtil.toByteArray(value, schema, rlb.buffer());
   }
 
 }
