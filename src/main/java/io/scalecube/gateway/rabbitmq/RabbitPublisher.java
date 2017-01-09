@@ -1,7 +1,5 @@
 package io.scalecube.gateway.rabbitmq;
 
-import static com.google.common.base.Preconditions.checkState;
-
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
