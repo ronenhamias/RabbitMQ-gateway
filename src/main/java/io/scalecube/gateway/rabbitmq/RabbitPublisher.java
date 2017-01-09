@@ -28,7 +28,7 @@ public class RabbitPublisher implements AutoCloseable {
    */
   public RabbitPublisher(String host, int port, int timeout, Credentials credentials)
       throws IOException, TimeoutException {
-    
+
     final ConnectionFactory factory = new ConnectionFactory();
     factory.setHost(host);
 
@@ -38,16 +38,14 @@ public class RabbitPublisher implements AutoCloseable {
 
     factory.setConnectionTimeout(timeout);
 
-
     if (credentials != null && credentials instanceof BasicCredentials) {
       BasicCredentials basic = (BasicCredentials) credentials;
       factory.setUsername(basic.username());
       factory.setPassword(basic.password());
     }
 
-
     this.connection = factory.newConnection();
-    if(this.connection!=null) {
+    if (this.connection != null) {
       this.channel = connection.createChannel();
     } else {
       throw new IllegalStateException("connection to host: " + host + " failed.");
