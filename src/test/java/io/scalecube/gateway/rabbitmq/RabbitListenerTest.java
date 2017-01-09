@@ -13,7 +13,7 @@ public class RabbitListenerTest {
   public void test_rabbit_listener() {
     try {
       new RabbitListener("localhost", 5672, 3, null, MessageSerialization.empty());
-    } catch (Exception e) {
+    } catch (Throwable e) {
       e.printStackTrace();
       if(e instanceof SocketTimeoutException) {
         System.out.println(e.getStackTrace());
