@@ -14,21 +14,17 @@ public class RabbitListenerTest {
     try {
       new RabbitListener("localhost", 5672, 3, null, MessageSerialization.empty());
     } catch (Throwable e) {
-      e.printStackTrace();
-      if(e instanceof SocketTimeoutException) {
-        System.out.println(e.getStackTrace());
-        assertEquals(e.getMessage().toString(), "connect timed out");
-      }
+      assertTrue(e instanceof SocketTimeoutException);
     }
 
     try {
-      new RabbitListener("localhost", -1, 3, null,MessageSerialization.empty());
+      new RabbitListener("localhost", -1, 3, null, MessageSerialization.empty());
     } catch (Exception e) {
       assertEquals(e.getMessage().toString(), "connect timed out");
     }
 
     try {
-      new RabbitListener("localhost", -1, 1000, new BasicCredentials("a", "b"),MessageSerialization.empty());
+      new RabbitListener("localhost", -1, 1000, new BasicCredentials("a", "b"), MessageSerialization.empty());
     } catch (Exception e) {
       assertEquals(e.getMessage().toString(),
           "ACCESS_REFUSED - Login was refused using authentication mechanism PLAIN. For details see the broker logfile.");
@@ -36,7 +32,7 @@ public class RabbitListenerTest {
 
     try {
       Credentials cred = new Credentials() {};
-      new RabbitListener("localhost", -1, 1000, cred,MessageSerialization.empty());
+      new RabbitListener("localhost", -1, 1000, cred, MessageSerialization.empty());
 
     } catch (Exception e) {
       assertEquals(e.getMessage().toString(),
@@ -44,8 +40,8 @@ public class RabbitListenerTest {
     }
 
     try {
-      RabbitListener  listener =new RabbitListener("localhost", -1, 1000, null,MessageSerialization.empty());
-      assertTrue(listener.listen() !=null);
+      RabbitListener listener = new RabbitListener("localhost", -1, 1000, null, MessageSerialization.empty());
+      assertTrue(listener.listen() != null);
       assertTrue(listener.channel().isOpen());
       listener.close();
       assertTrue(!listener.channel().isOpen());
