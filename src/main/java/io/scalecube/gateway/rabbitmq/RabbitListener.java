@@ -1,7 +1,5 @@
 package io.scalecube.gateway.rabbitmq;
 
-import static com.google.common.base.Preconditions.checkState;
-
 import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
@@ -44,7 +42,6 @@ public class RabbitListener implements AutoCloseable {
       throws Exception {
 
     final ConnectionFactory factory = new ConnectionFactory();
-    checkState(factory != null);
     this.serialization = serialization;
 
     factory.setHost(host);
