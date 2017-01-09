@@ -10,13 +10,13 @@ public class RabbitListenerTest {
   @Test
   public void test_rabbit_publisher() {
     try {
-      new RabbitListener("localhost", 5672, 1, null, MessageSerialization.empty());
+      new RabbitListener("localhost", 5672, 3, null, MessageSerialization.empty());
     } catch (Exception e) {
       assertEquals(e.getMessage().toString(), "connect timed out");
     }
 
     try {
-      new RabbitListener("localhost", -1, 1, null,MessageSerialization.empty());
+      new RabbitListener("localhost", -1, 3, null,MessageSerialization.empty());
     } catch (Exception e) {
       assertEquals(e.getMessage().toString(), "connect timed out");
     }
