@@ -8,7 +8,7 @@ notifications:
 
 env:
   global:
-    - CODACY_PROJECT_TOKEN=aCsUq5jwRlkyrhBMAdKm
+    - CODACY_PROJECT_TOKEN=556114b2f83e42fc952958356f4f4b1f
    
 services:
   - rabbitmq
