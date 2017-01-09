@@ -95,10 +95,6 @@ public class Topic {
     public Topic build() {
       return new Topic(this.name, this.exchange, this.durable, this.autoDelete, this.exclusive, this.properties);
     }
-
-    public Topic create() {
-      return build();
-    }
   }
 
   public BasicProperties properties() {

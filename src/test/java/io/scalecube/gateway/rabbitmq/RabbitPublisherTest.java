@@ -23,13 +23,13 @@ public class RabbitPublisherTest {
     }
 
     try {
-      RabbitPublisher publisher = new RabbitPublisher("localhost", -1, 3, null);
+      new RabbitPublisher("localhost", -1, 3, null);
     } catch (Exception e) {
       assertEquals(e.getMessage().toString(), "connect timed out");
     }
 
     try {
-      RabbitPublisher publisher = new RabbitPublisher("localhost", -1, 1000, new BasicCredentials("a", "b"));
+      new RabbitPublisher("localhost", -1, 1000, new BasicCredentials("a", "b"));
     } catch (Exception e) {
       assertEquals(e.getMessage().toString(),
           "ACCESS_REFUSED - Login was refused using authentication mechanism PLAIN. For details see the broker logfile.");
@@ -37,7 +37,7 @@ public class RabbitPublisherTest {
 
     try {
       Credentials cred = new Credentials() {};
-      RabbitPublisher publisher = new RabbitPublisher("localhost", -1, 1000, cred);
+      new RabbitPublisher("localhost", -1, 1000, cred);
 
     } catch (Exception e) {
       assertEquals(e.getMessage().toString(),
