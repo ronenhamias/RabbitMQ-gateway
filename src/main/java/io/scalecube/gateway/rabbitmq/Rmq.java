@@ -156,8 +156,8 @@ public class Rmq implements AutoCloseable {
 
   @Override
   public void close() throws Exception {
-    this.listener.close();
     this.publisher.close();
+    this.listener.close();
   }
 
 }

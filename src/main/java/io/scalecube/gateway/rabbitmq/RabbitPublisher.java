@@ -76,10 +76,10 @@ public class RabbitPublisher implements AutoCloseable {
 
   @Override
   public void close() throws Exception {
-    if (this.channel != null) {
+    if (this.channel != null && this.channel.isOpen()) {
       this.channel.close();
     }
-    if (this.connection != null) {
+    if (this.connection != null && this.connection.isOpen()) {
       this.connection.close();
     }
   }
