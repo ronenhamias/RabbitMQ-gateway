@@ -13,7 +13,7 @@ public class RabbitPublisherTest {
   public void test_rabbit_publisher() {
 
     try {
-      new RabbitPublisher("localhost", 5672, 1, null);
+      new RabbitPublisher("localhost", 5672, 3, null);
     } catch (Exception e) {
       if (e.getMessage() != null) {
         assertEquals(e.getMessage().toString(), "connect timed out");
@@ -23,7 +23,7 @@ public class RabbitPublisherTest {
     }
 
     try {
-      RabbitPublisher publisher = new RabbitPublisher("localhost", -1, 1, null);
+      RabbitPublisher publisher = new RabbitPublisher("localhost", -1, 3, null);
     } catch (Exception e) {
       assertEquals(e.getMessage().toString(), "connect timed out");
     }
