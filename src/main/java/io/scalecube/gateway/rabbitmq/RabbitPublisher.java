@@ -32,7 +32,6 @@ public class RabbitPublisher implements AutoCloseable {
       throws IOException, TimeoutException {
 
     final ConnectionFactory factory = new ConnectionFactory();
-    checkState(factory != null);
     factory.setHost(host);
 
     if (port != -1) {
