@@ -1,5 +1,7 @@
 package io.scalecube.gateway.rabbitmq;
 
+import static com.google.common.base.Preconditions.checkState;
+
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
@@ -30,6 +32,7 @@ public class RabbitPublisher implements AutoCloseable {
       throws IOException, TimeoutException {
 
     final ConnectionFactory factory = new ConnectionFactory();
+    checkState(factory != null);
     factory.setHost(host);
 
     if (port != -1) {
