@@ -8,7 +8,7 @@ import org.junit.Test;
 public class RabbitListenerTest {
 
   @Test
-  public void test_rabbit_publisher() {
+  public void test_rabbit_listener() {
     try {
       new RabbitListener("localhost", 5672, 3, null, MessageSerialization.empty());
     } catch (Exception e) {

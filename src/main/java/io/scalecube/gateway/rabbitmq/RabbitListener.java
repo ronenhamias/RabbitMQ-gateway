@@ -121,15 +121,11 @@ public class RabbitListener implements AutoCloseable {
 
   private Consumer createConsumer(Channel channel) {
     final Consumer consumer = new DefaultConsumer(channel) {
+      
       @Override
       public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body)
           throws IOException {
-        try {
           incomingMessagesSubject.onNext(body);
-        } catch (Exception e) {
-          // TODO: log exception.
-          e.printStackTrace();
-        }
       }
     };
     return consumer;
