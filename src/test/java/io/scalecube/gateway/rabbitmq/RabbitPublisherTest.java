@@ -1,6 +1,7 @@
 package io.scalecube.gateway.rabbitmq;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
@@ -37,11 +38,11 @@ public class RabbitPublisherTest {
     }
    
     try {
-      RabbitPublisher publisher = new RabbitPublisher("localhost", -1, 1000, new BasicCredentials("a", "b"));
-      publisher.subscribe(Exchange.builder().build());
+      RabbitPublisher publisher = new RabbitPublisher("localhost", -1, 1000, null);
+      publisher.subscribe(Exchange.builder().name("in").build());
+      assertTrue( publisher.channel() !=null);
     } catch (Exception ex) {
-      assertEquals(ex.getMessage().toString(),
-          "ACCESS_REFUSED - Login was refused using authentication mechanism PLAIN. For details see the broker logfile.");
+      assertEquals(ex.getMessage().toString(), ".");
     }
     
   }
