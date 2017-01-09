@@ -18,8 +18,11 @@ before_install:
   - java -jar jpm4j.jar -u init
   - ~/jpm/bin/jpm install com.codacy:codacy-coverage-reporter:assembly
 
-  
 after_success:
   - bash <(curl -s https://codecov.io/bash) -t 4c29e7f6-c9f1-4fef-8a0e-62df364b567f
-  - ~/jpm/bin/codacy-coverage-reporter -l Java -r build/reports/jacoco/test/jacocoTestReport.xml
+  - mvn jacoco:report
+  - curl http://www.jpm4j.org/install/script > jpmInstall.sh
+  - sudo sh jpmInstall.sh
+  - sudo jpm install com.codacy:codacy-coverage-reporter:assembly
+  - codacy-coverage-reporter -l Java -r build/reports/jacoco/test/jacocoTestReport.xml
 
