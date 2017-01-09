@@ -12,10 +12,14 @@ public class Topic {
   private BasicProperties properties = MessageProperties.PERSISTENT_TEXT_PLAIN;
   private String exchange = "";
 
-  public Topic(String name, String exchange, Boolean durable) {
+  private Topic(String name, String exchange, Boolean durable, boolean autoDelete, boolean exclusive,
+      BasicProperties properties) {
     this.name = name;
     this.exchange = exchange;
     this.durable = durable;
+    this.autoDelete = autoDelete;
+    this.exclusive = exclusive;
+    this.properties = properties;
   }
 
   public String name() {
@@ -52,10 +56,12 @@ public class Topic {
   public static class Builder {
 
     private String name;
-    private Boolean durable = true;
-
+    private boolean durable = true;
+    private boolean autoDelete = false;
+    private boolean exclusive = false;
+    private BasicProperties properties = MessageProperties.PERSISTENT_TEXT_PLAIN;
     private String exchange = "";
-
+    
     public Builder name(String name) {
       this.name = name;
       return this;
@@ -71,15 +77,28 @@ public class Topic {
       return this;
     }
 
+    public Builder autoDelete(boolean autoDelete) {
+      this.autoDelete = autoDelete;
+      return this;
+    }
+
+    public Builder exclusive(boolean exclusive) {
+      this.exclusive = exclusive;
+      return this;
+    }
+    
+    public Builder properties(BasicProperties properties) {
+      this.properties = properties;
+      return this;
+    }
+
     public Topic build() {
-      return new Topic(this.name, this.exchange, this.durable);
+      return new Topic(this.name, this.exchange, this.durable, this.autoDelete, this.exclusive, this.properties);
     }
 
     public Topic create() {
       return build();
     }
-
-
   }
 
   public BasicProperties properties() {
