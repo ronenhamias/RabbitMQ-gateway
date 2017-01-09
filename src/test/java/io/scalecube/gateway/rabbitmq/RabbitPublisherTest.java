@@ -46,13 +46,17 @@ public class RabbitPublisherTest {
 
     try {
       RabbitPublisher publisher = new RabbitPublisher("localhost", -1, 1000, null);
-      publisher.subscribe(Exchange.builder()
-          .durable(false)
-          .autoDelete(false)
-          .internal(false)
-          .type("direct")
-          .name("in")
-          .properties(new HashMap<>()).build());
+      Exchange exchange = Exchange.builder()
+      .durable(false)
+      .autoDelete(false)
+      .internal(false)
+      .type("direct")
+      .name("in")
+      .properties(new HashMap<>()).build();
+      assertTrue(!exchange.internal());
+      
+      publisher.subscribe(exchange);
+      
       assertTrue(publisher.channel().isOpen());
       publisher.close();
       assertTrue(!publisher.channel().isOpen());
