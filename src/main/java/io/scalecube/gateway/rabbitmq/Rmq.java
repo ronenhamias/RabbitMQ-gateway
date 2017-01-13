@@ -1,6 +1,5 @@
 package io.scalecube.gateway.rabbitmq;
 
-import io.scalecube.gateway.rabbitmq.Rmq.Builder;
 import io.scalecube.gateway.rabbitmq.serialization.proto.JsonMessageSerialization;
 import io.scalecube.gateway.rabbitmq.serialization.proto.ProtoMessageSerialization;
 import io.scalecube.gateway.rabbitmq.serialization.text.PlainMessageSeriazliation;
@@ -33,6 +32,8 @@ public class Rmq implements AutoCloseable {
 
     private boolean autoRecovery = true;
 
+    private int networkRecoveryInterval = 1000;
+
     /**
      * Set the host of the broker.
      * 
@@ -46,7 +47,7 @@ public class Rmq implements AutoCloseable {
     public String host() {
       return this.host;
     }
-   
+
     /**
      * Set the port of the broker.
      * 
@@ -74,7 +75,7 @@ public class Rmq implements AutoCloseable {
     public Credentials credentials() {
       return this.credentials;
     }
-    
+
     /**
      * Set the TCP connection timeout.
      * 
@@ -89,7 +90,7 @@ public class Rmq implements AutoCloseable {
       return this.timeout;
     }
 
-    
+
     public Rmq build() throws Exception {
       return new Rmq(
           new RabbitListener(this),
@@ -120,7 +121,7 @@ public class Rmq implements AutoCloseable {
       this.serialization = serialization;
       return this;
     }
-  
+
     public Builder autoRecovery(boolean autoRecovery) {
       this.autoRecovery = autoRecovery;
       return this;
@@ -128,6 +129,15 @@ public class Rmq implements AutoCloseable {
 
     public boolean autoRecovery() {
       return autoRecovery;
+    }
+
+    public Builder networkRecoveryInterval(int networkRecoveryInterval) {
+      this.networkRecoveryInterval = networkRecoveryInterval;
+      return this;
+    }
+
+    public int networkRecoveryInterval() {
+      return networkRecoveryInterval;
     }
   }
 

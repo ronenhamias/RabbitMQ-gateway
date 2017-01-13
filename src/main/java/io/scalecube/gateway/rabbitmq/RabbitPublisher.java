@@ -2,9 +2,6 @@ package io.scalecube.gateway.rabbitmq;
 
 import com.rabbitmq.client.Channel;
 
-import java.io.IOException;
-import java.util.concurrent.TimeoutException;
-
 /**
  * Publisher to rabbit mq messages.
  */

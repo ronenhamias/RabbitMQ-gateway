@@ -4,9 +4,6 @@ import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
 
-import java.io.IOException;
-import java.util.concurrent.TimeoutException;
-
 public class RmqChannel implements AutoCloseable {
 
 
@@ -32,7 +29,7 @@ public class RmqChannel implements AutoCloseable {
     factory.setConnectionTimeout(builder.timeout());
 
     factory.setAutomaticRecoveryEnabled(builder.autoRecovery());
-    factory.setNetworkRecoveryInterval(10000);
+    factory.setNetworkRecoveryInterval(builder.networkRecoveryInterval());
 
     if (builder.credentials() != null && builder.credentials() instanceof BasicCredentials) {
       BasicCredentials basic = (BasicCredentials) builder.credentials();

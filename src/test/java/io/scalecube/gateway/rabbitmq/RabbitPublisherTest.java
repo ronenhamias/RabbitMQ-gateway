@@ -74,7 +74,11 @@ public class RabbitPublisherTest {
           .host("localhost")
           .port(-1)
           .timeout(1000)
-          .credentials(null);
+          .credentials(null)
+          .networkRecoveryInterval(2000);
+
+      assertTrue(!builder.autoRecovery());
+      assertEquals(builder.networkRecoveryInterval(), 2000);
 
       RabbitPublisher publisher = new RabbitPublisher(builder);
       Exchange exchange = Exchange.builder()

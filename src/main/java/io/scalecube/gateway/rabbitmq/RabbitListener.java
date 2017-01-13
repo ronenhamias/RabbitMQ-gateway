@@ -11,7 +11,6 @@ import rx.subjects.PublishSubject;
 import rx.subjects.Subject;
 
 import java.io.IOException;
-import java.util.concurrent.TimeoutException;
 
 public class RabbitListener extends RmqChannel {
 
