@@ -13,7 +13,15 @@ public class RabbitPublisherTest {
   public void test_rabbit_publisher() {
 
     try {
-      new RabbitPublisher("localhost", 5672, 5, null);
+      Rmq.Builder builder = Rmq.builder()
+          .host("localhost")
+          .port(5672)
+          .timeout(5)
+          .autoRecovery(false)
+          .networkRecoveryInterval(1000)
+          .serialization(MessageSerialization.empty());
+
+      new RabbitPublisher(builder);
     } catch (Exception e) {
       if (e.getMessage() != null) {
         assertEquals(e.getMessage().toString(), "connect timed out");
@@ -23,21 +31,46 @@ public class RabbitPublisherTest {
     }
 
     try {
-      new RabbitPublisher("localhost", -1, 3, null);
+      Rmq.Builder builder = Rmq.builder()
+          .host("localhost")
+          .port(-1)
+          .timeout(3)
+          .autoRecovery(false)
+          .networkRecoveryInterval(1000)
+          .serialization(null);
+
+      new RabbitPublisher(builder);
+
     } catch (Exception e) {
       assertEquals(e.getMessage().toString(), "connect timed out");
     }
 
     try {
-      new RabbitPublisher("localhost", -1, 1000, new BasicCredentials("a", "b"));
+      Rmq.Builder builder = Rmq.builder()
+          .host("localhost")
+          .port(-1)
+          .timeout(1000)
+          .autoRecovery(false)
+          .networkRecoveryInterval(1000)
+          .credentials(new BasicCredentials("a", "b"));
+
+      new RabbitPublisher(builder);
+
     } catch (Exception e) {
       assertEquals(e.getMessage().toString(),
           "ACCESS_REFUSED - Login was refused using authentication mechanism PLAIN. For details see the broker logfile.");
     }
 
     try {
-      Credentials cred = new Credentials() {};
-      new RabbitPublisher("localhost", -1, 1000, cred);
+      Rmq.Builder builder = Rmq.builder()
+          .host("localhost")
+          .port(-1)
+          .timeout(1000)
+          .autoRecovery(false)
+          .networkRecoveryInterval(1000)
+          .credentials(new Credentials() {});
+
+      new RabbitPublisher(builder);
 
     } catch (Exception e) {
       assertEquals(e.getMessage().toString(),
@@ -45,18 +78,29 @@ public class RabbitPublisherTest {
     }
 
     try {
-      RabbitPublisher publisher = new RabbitPublisher("localhost", -1, 1000, null);
+      Rmq.Builder builder = Rmq.builder()
+          .host("localhost")
+          .port(-1)
+          .timeout(1000)
+          .credentials(null)
+          .autoRecovery(false)
+          .networkRecoveryInterval(2000);
+
+      assertTrue(!builder.autoRecovery());
+      assertEquals(builder.networkRecoveryInterval(), 2000);
+
+      RabbitPublisher publisher = new RabbitPublisher(builder);
       Exchange exchange = Exchange.builder()
-      .durable(false)
-      .autoDelete(false)
-      .internal(false)
-      .type("direct")
-      .name("in")
-      .properties(new HashMap<>()).build();
+          .durable(false)
+          .autoDelete(false)
+          .internal(false)
+          .type("direct")
+          .name("in")
+          .properties(new HashMap<>()).build();
       assertTrue(!exchange.internal());
-      
+
       publisher.subscribe(exchange);
-      
+
       assertTrue(publisher.channel().isOpen());
       publisher.close();
       assertTrue(!publisher.channel().isOpen());

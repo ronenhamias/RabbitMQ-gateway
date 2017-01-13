@@ -30,6 +30,10 @@ public class Rmq implements AutoCloseable {
 
     private MessageSerialization serialization = MessageSerialization.empty();
 
+    private boolean autoRecovery = false;
+
+    private int networkRecoveryInterval = 1000;
+
     /**
      * Set the host of the broker.
      * 
@@ -38,6 +42,10 @@ public class Rmq implements AutoCloseable {
     public Builder host(String host) {
       this.host = host;
       return this;
+    }
+
+    public String host() {
+      return this.host;
     }
 
     /**
@@ -50,6 +58,10 @@ public class Rmq implements AutoCloseable {
       return this;
     }
 
+    public int port() {
+      return this.port;
+    }
+
     /**
      * Set the password.
      * 
@@ -58,6 +70,10 @@ public class Rmq implements AutoCloseable {
     public Builder credentials(Credentials credentials) {
       this.credentials = credentials;
       return this;
+    }
+
+    public Credentials credentials() {
+      return this.credentials;
     }
 
     /**
@@ -70,10 +86,15 @@ public class Rmq implements AutoCloseable {
       return this;
     }
 
+    public int timeout() {
+      return this.timeout;
+    }
+
+
     public Rmq build() throws Exception {
       return new Rmq(
-          new RabbitListener(this.host, this.port, this.timeout, this.credentials, this.serialization),
-          new RabbitPublisher(this.host, this.port, this.timeout, this.credentials),
+          new RabbitListener(this),
+          new RabbitPublisher(this),
           this.serialization);
     }
 
@@ -90,6 +111,33 @@ public class Rmq implements AutoCloseable {
     public Builder json() {
       this.serialization = new JsonMessageSerialization();
       return this;
+    }
+
+    public MessageSerialization serialization() {
+      return this.serialization;
+    }
+
+    public Builder serialization(MessageSerialization serialization) {
+      this.serialization = serialization;
+      return this;
+    }
+
+    public Builder autoRecovery(boolean autoRecovery) {
+      this.autoRecovery = autoRecovery;
+      return this;
+    }
+
+    public boolean autoRecovery() {
+      return autoRecovery;
+    }
+
+    public Builder networkRecoveryInterval(int networkRecoveryInterval) {
+      this.networkRecoveryInterval = networkRecoveryInterval;
+      return this;
+    }
+
+    public int networkRecoveryInterval() {
+      return networkRecoveryInterval;
     }
   }
 
