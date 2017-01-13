@@ -22,13 +22,8 @@ public class RabbitListener extends RmqChannel {
   /**
    * initialize rabbit mq listener
    * 
-   * @param host of rabbit broker.
-   * @param port of rabbit mq broker.
-   * @param timeout connection timeout to rabbit mq broker.
-   * @param credentials to rabbit mq broker.
-   * @param serialization to be used when sending messages.
-   * @throws IOException if failed.
-   * @throws TimeoutException if failed.
+   * @param builder of rabbit broker.
+   * @throws exception if failed.
    */
   public RabbitListener(Rmq.Builder builder)
       throws Exception {

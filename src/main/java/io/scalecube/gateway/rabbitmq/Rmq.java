@@ -63,6 +63,10 @@ public class Rmq implements AutoCloseable {
       return this;
     }
 
+    public Credentials credentials() {
+      return this.credentials;
+    }
+    
     /**
      * Set the TCP connection timeout.
      * 
@@ -73,6 +77,11 @@ public class Rmq implements AutoCloseable {
       return this;
     }
 
+    public int timeout() {
+      return this.timeout;
+    }
+
+    
     public Rmq build() throws Exception {
       return new Rmq(
           new RabbitListener(this),
@@ -95,14 +104,15 @@ public class Rmq implements AutoCloseable {
       return this;
     }
 
-    public Credentials credentials() {
-      return this.credentials;
-    }
-
     public MessageSerialization serialization() {
       return this.serialization;
     }
 
+    public Builder serialization(MessageSerialization serialization) {
+      this.serialization = serialization;
+      return this;
+    }
+    
     public String host() {
       return this.host;
     }
@@ -111,10 +121,7 @@ public class Rmq implements AutoCloseable {
       return this.port;
     }
 
-    public int timeout() {
-      return this.timeout;
-    }
-
+  
     public Builder autoRecovery(boolean autoRecovery) {
       this.autoRecovery = autoRecovery;
       return this;
@@ -122,11 +129,6 @@ public class Rmq implements AutoCloseable {
 
     public boolean autoRecovery() {
       return autoRecovery;
-    }
-
-    public Builder serialization(MessageSerialization serialization) {
-      this.serialization = serialization;
-      return this;
     }
   }
 

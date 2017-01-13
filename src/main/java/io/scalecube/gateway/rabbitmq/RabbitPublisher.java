@@ -13,12 +13,8 @@ public class RabbitPublisher extends RmqChannel {
   /**
    * initialize rabbit mq publisher
    * 
-   * @param host of rabbit broker.
-   * @param port of rabbit mq broker.
-   * @param timeout connection timeout to rabbit mq broker.
-   * @param credentials to rabbit mq broker.
-   * @throws IOException if failed.
-   * @throws TimeoutException if failed.
+   * @param builder of rabbit broker.
+   * @throws exception if failed.
    */
 
   public RabbitPublisher(Rmq.Builder builder) throws Exception {
