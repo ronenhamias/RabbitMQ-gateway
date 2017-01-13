@@ -43,6 +43,10 @@ public class Rmq implements AutoCloseable {
       return this;
     }
 
+    public String host() {
+      return this.host;
+    }
+   
     /**
      * Set the port of the broker.
      * 
@@ -57,11 +61,6 @@ public class Rmq implements AutoCloseable {
       return this.port;
     }
 
-    
-    public String host() {
-      return this.host;
-    }
-    
     /**
      * Set the password.
      * 
