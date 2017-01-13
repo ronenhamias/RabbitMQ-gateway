@@ -11,7 +11,7 @@ public class RabbitPublisher extends RmqChannel {
    * initialize rabbit mq publisher
    * 
    * @param builder of rabbit broker.
-   * @throws exception if failed.
+   * @throws Exception if failed.
    */
 
   public RabbitPublisher(Rmq.Builder builder) throws Exception {
