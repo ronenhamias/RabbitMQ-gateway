@@ -30,7 +30,7 @@ public class Rmq implements AutoCloseable {
 
     private MessageSerialization serialization = MessageSerialization.empty();
 
-    private boolean autoRecovery = true;
+    private boolean autoRecovery = false;
 
     private int networkRecoveryInterval = 1000;
 

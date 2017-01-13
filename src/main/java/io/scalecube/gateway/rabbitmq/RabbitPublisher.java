@@ -8,7 +8,7 @@ import com.rabbitmq.client.Channel;
 public class RabbitPublisher extends RmqChannel {
 
   /**
-   * initialize rabbit mq publisher
+   * initialize rabbit mq publisher.
    * 
    * @param builder of rabbit broker.
    * @throws Exception if failed.
