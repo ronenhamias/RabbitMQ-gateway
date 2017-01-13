@@ -16,6 +16,8 @@ public class RabbitListenerTest {
           .host("localhost")
           .port(5672)
           .timeout(3)
+          .autoRecovery(false)
+          .networkRecoveryInterval(1000)
           .serialization(MessageSerialization.empty());
 
       new RabbitListener(builder);
@@ -29,6 +31,9 @@ public class RabbitListenerTest {
           .port(-1)
           .timeout(3)
           .credentials(null)
+          .autoRecovery(false)
+          .networkRecoveryInterval(1000)
+          
           .serialization(MessageSerialization.empty());
 
       new RabbitListener(builder);
@@ -42,6 +47,8 @@ public class RabbitListenerTest {
           .port(-1)
           .timeout(1000)
           .credentials(new BasicCredentials("a", "b"))
+          .autoRecovery(false)
+          .networkRecoveryInterval(1000)
           .serialization(MessageSerialization.empty());
 
       new RabbitListener(builder);
@@ -56,6 +63,8 @@ public class RabbitListenerTest {
           .port(-1)
           .timeout(1000)
           .credentials(new Credentials() {})
+          .autoRecovery(false)
+          .networkRecoveryInterval(1000)
           .serialization(MessageSerialization.empty());
 
       new RabbitListener(builder);
@@ -71,10 +80,15 @@ public class RabbitListenerTest {
           .port(-1)
           .timeout(1000)
           .credentials(null)
+          .autoRecovery(false)
+          .networkRecoveryInterval(1000)
           .serialization(MessageSerialization.empty());
 
+      
       RabbitListener listener = new RabbitListener(builder);
 
+      assertTrue(builder.networkRecoveryInterval()== 1000);
+      assertTrue(builder.autoRecovery() == false);
       assertTrue(listener.listen() != null);
       assertTrue(listener.channel().isOpen());
       listener.close();

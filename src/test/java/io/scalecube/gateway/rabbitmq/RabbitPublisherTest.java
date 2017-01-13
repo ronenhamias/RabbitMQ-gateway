@@ -17,6 +17,8 @@ public class RabbitPublisherTest {
           .host("localhost")
           .port(5672)
           .timeout(5)
+          .autoRecovery(false)
+          .networkRecoveryInterval(1000)
           .serialization(MessageSerialization.empty());
 
       new RabbitPublisher(builder);
@@ -33,6 +35,8 @@ public class RabbitPublisherTest {
           .host("localhost")
           .port(-1)
           .timeout(3)
+          .autoRecovery(false)
+          .networkRecoveryInterval(1000)
           .serialization(null);
 
       new RabbitPublisher(builder);
@@ -46,6 +50,8 @@ public class RabbitPublisherTest {
           .host("localhost")
           .port(-1)
           .timeout(1000)
+          .autoRecovery(false)
+          .networkRecoveryInterval(1000)
           .credentials(new BasicCredentials("a", "b"));
 
       new RabbitPublisher(builder);
@@ -60,6 +66,8 @@ public class RabbitPublisherTest {
           .host("localhost")
           .port(-1)
           .timeout(1000)
+          .autoRecovery(false)
+          .networkRecoveryInterval(1000)
           .credentials(new Credentials() {});
 
       new RabbitPublisher(builder);
@@ -75,6 +83,7 @@ public class RabbitPublisherTest {
           .port(-1)
           .timeout(1000)
           .credentials(null)
+          .autoRecovery(false)
           .networkRecoveryInterval(2000);
 
       assertTrue(!builder.autoRecovery());
