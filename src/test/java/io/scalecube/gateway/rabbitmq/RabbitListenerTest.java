@@ -12,27 +12,53 @@ public class RabbitListenerTest {
   @Test
   public void test_rabbit_listener() {
     try {
-      new RabbitListener("localhost", 5672, 3, null, MessageSerialization.empty());
+      Rmq.Builder builder = Rmq.builder()
+          .host("localhost")
+          .port(5672)
+          .timeout(3)
+          .serialization(MessageSerialization.empty());
+
+      new RabbitListener(builder);
     } catch (Throwable e) {
       assertTrue(e instanceof SocketTimeoutException);
     }
 
     try {
-      new RabbitListener("localhost", -1, 3, null, MessageSerialization.empty());
+      Rmq.Builder builder = Rmq.builder()
+          .host("localhost")
+          .port(-1)
+          .timeout(3)
+          .credentials(null)
+          .serialization(MessageSerialization.empty());
+
+      new RabbitListener(builder);
     } catch (Exception e) {
       assertEquals(e.getMessage().toString(), "connect timed out");
     }
 
     try {
-      new RabbitListener("localhost", -1, 1000, new BasicCredentials("a", "b"), MessageSerialization.empty());
+      Rmq.Builder builder = Rmq.builder()
+          .host("localhost")
+          .port(-1)
+          .timeout(1000)
+          .credentials(new BasicCredentials("a", "b"))
+          .serialization(MessageSerialization.empty());
+
+      new RabbitListener(builder);
     } catch (Exception e) {
       assertEquals(e.getMessage().toString(),
           "ACCESS_REFUSED - Login was refused using authentication mechanism PLAIN. For details see the broker logfile.");
     }
 
     try {
-      Credentials cred = new Credentials() {};
-      new RabbitListener("localhost", -1, 1000, cred, MessageSerialization.empty());
+      Rmq.Builder builder = Rmq.builder()
+          .host("localhost")
+          .port(-1)
+          .timeout(1000)
+          .credentials(new Credentials() {})
+          .serialization(MessageSerialization.empty());
+
+      new RabbitListener(builder);
 
     } catch (Exception e) {
       assertEquals(e.getMessage().toString(),
@@ -40,7 +66,15 @@ public class RabbitListenerTest {
     }
 
     try {
-      RabbitListener listener = new RabbitListener("localhost", -1, 1000, null, MessageSerialization.empty());
+      Rmq.Builder builder = Rmq.builder()
+          .host("localhost")
+          .port(-1)
+          .timeout(1000)
+          .credentials(null)
+          .serialization(MessageSerialization.empty());
+
+      RabbitListener listener = new RabbitListener(builder);
+
       assertTrue(listener.listen() != null);
       assertTrue(listener.channel().isOpen());
       listener.close();

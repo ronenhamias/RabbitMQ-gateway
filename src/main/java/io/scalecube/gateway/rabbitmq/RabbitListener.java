@@ -2,8 +2,6 @@ package io.scalecube.gateway.rabbitmq;
 
 import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.Channel;
-import com.rabbitmq.client.Connection;
-import com.rabbitmq.client.ConnectionFactory;
 import com.rabbitmq.client.Consumer;
 import com.rabbitmq.client.DefaultConsumer;
 import com.rabbitmq.client.Envelope;
@@ -15,13 +13,7 @@ import rx.subjects.Subject;
 import java.io.IOException;
 import java.util.concurrent.TimeoutException;
 
-public class RabbitListener implements AutoCloseable {
-
-
-
-  private final Connection connection;
-
-  private final Channel channel;
+public class RabbitListener extends RmqChannel {
 
   private final Subject<byte[], byte[]> incomingMessagesSubject;
 
@@ -38,32 +30,15 @@ public class RabbitListener implements AutoCloseable {
    * @throws IOException if failed.
    * @throws TimeoutException if failed.
    */
-  public RabbitListener(String host, int port, int timeout, Credentials credentials, MessageSerialization serialization)
+  public RabbitListener(Rmq.Builder builder)
       throws Exception {
 
-    final ConnectionFactory factory = new ConnectionFactory();
-    this.serialization = serialization;
+    super(builder);
 
-    factory.setHost(host);
-
-    if (port != -1) {
-      factory.setPort(port);
-    }
-
-    factory.setConnectionTimeout(timeout);
-
-
-    if (credentials != null && credentials instanceof BasicCredentials) {
-      BasicCredentials basic = (BasicCredentials) credentials;
-      factory.setUsername(basic.username());
-      factory.setPassword(basic.password());
-    }
-
-
-    this.connection = factory.newConnection();
-    this.channel = connection.createChannel();
+    this.serialization = builder.serialization();
     this.incomingMessagesSubject = PublishSubject.<byte[]>create().toSerialized();
   }
+
 
   /**
    * Declare an exchange, via an interface that allows the complete set of arguments.
@@ -118,11 +93,11 @@ public class RabbitListener implements AutoCloseable {
 
   private Consumer createConsumer(Channel channel) {
     final Consumer consumer = new DefaultConsumer(channel) {
-      
+
       @Override
       public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body)
           throws IOException {
-          incomingMessagesSubject.onNext(body);
+        incomingMessagesSubject.onNext(body);
       }
     };
     return consumer;
@@ -150,14 +125,4 @@ public class RabbitListener implements AutoCloseable {
     return this.channel;
   }
 
-
-  @Override
-  public void close() throws Exception {
-    if (this.channel != null && this.channel.isOpen()) {
-      this.channel.close();
-    }
-    if (this.connection != null && this.connection.isOpen()) {
-      this.connection.close();
-    }
-  }
 }

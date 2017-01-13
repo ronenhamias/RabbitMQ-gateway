@@ -1,5 +1,6 @@
 package io.scalecube.gateway.rabbitmq;
 
+import io.scalecube.gateway.rabbitmq.Rmq.Builder;
 import io.scalecube.gateway.rabbitmq.serialization.proto.JsonMessageSerialization;
 import io.scalecube.gateway.rabbitmq.serialization.proto.ProtoMessageSerialization;
 import io.scalecube.gateway.rabbitmq.serialization.text.PlainMessageSeriazliation;
@@ -29,6 +30,8 @@ public class Rmq implements AutoCloseable {
     private Credentials credentials;
 
     private MessageSerialization serialization = MessageSerialization.empty();
+
+    private boolean autoRecovery = true;
 
     /**
      * Set the host of the broker.
@@ -72,8 +75,8 @@ public class Rmq implements AutoCloseable {
 
     public Rmq build() throws Exception {
       return new Rmq(
-          new RabbitListener(this.host, this.port, this.timeout, this.credentials, this.serialization),
-          new RabbitPublisher(this.host, this.port, this.timeout, this.credentials),
+          new RabbitListener(this),
+          new RabbitPublisher(this),
           this.serialization);
     }
 
@@ -89,6 +92,40 @@ public class Rmq implements AutoCloseable {
 
     public Builder json() {
       this.serialization = new JsonMessageSerialization();
+      return this;
+    }
+
+    public Credentials credentials() {
+      return this.credentials;
+    }
+
+    public MessageSerialization serialization() {
+      return this.serialization;
+    }
+
+    public String host() {
+      return this.host;
+    }
+
+    public int port() {
+      return this.port;
+    }
+
+    public int timeout() {
+      return this.timeout;
+    }
+
+    public Builder autoRecovery(boolean autoRecovery) {
+      this.autoRecovery = autoRecovery;
+      return this;
+    }
+
+    public boolean autoRecovery() {
+      return autoRecovery;
+    }
+
+    public Builder serialization(MessageSerialization serialization) {
+      this.serialization = serialization;
       return this;
     }
   }
