@@ -53,6 +53,15 @@ public class Rmq implements AutoCloseable {
       return this;
     }
 
+    public int port() {
+      return this.port;
+    }
+
+    
+    public String host() {
+      return this.host;
+    }
+    
     /**
      * Set the password.
      * 
@@ -112,15 +121,6 @@ public class Rmq implements AutoCloseable {
       this.serialization = serialization;
       return this;
     }
-    
-    public String host() {
-      return this.host;
-    }
-
-    public int port() {
-      return this.port;
-    }
-
   
     public Builder autoRecovery(boolean autoRecovery) {
       this.autoRecovery = autoRecovery;

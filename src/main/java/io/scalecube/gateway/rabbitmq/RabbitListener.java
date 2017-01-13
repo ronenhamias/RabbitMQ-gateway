@@ -23,7 +23,7 @@ public class RabbitListener extends RmqChannel {
    * initialize rabbit mq listener
    * 
    * @param builder of rabbit broker.
-   * @throws exception if failed.
+   * @throws Exception if failed.
    */
   public RabbitListener(Rmq.Builder builder)
       throws Exception {
