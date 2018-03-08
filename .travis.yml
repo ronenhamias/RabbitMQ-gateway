@@ -17,6 +17,7 @@ before_install:
 - ssh-add tmp/io-scalecube-ci_rsa
 - ssh -T git@github.com | true
 - gpg --import tmp/all.gpg
+- gpg --default-key 0E5FEEC7
 - popd
 install: true
 script:
