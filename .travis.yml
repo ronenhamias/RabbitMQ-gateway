@@ -9,12 +9,12 @@ services:
 - rabbitmq
 before_install:
 - openssl aes-256-cbc -K $encrypted_2230a114d608_key -iv $encrypted_2230a114d608_iv
-  -in /tmp/all.gpg -out /tmp/io-scalecube-ci_rsa -d
-- openssl aes-256-cbc -K $encrypted_2230a114d608_key -iv $encrypted_2230a114d608_iv
   -in io-scalecube-ci_rsa.enc -out /tmp/io-scalecube-ci_rsa -d
+- eval "$(ssh-agent -s)"
+- chmod 600 /tmp/io-scalecube-ci_rsa
+- ssh-add /tmp/io-scalecube-ci_rsa
+- ssh -T git@github.com | true
 - openssl aes-256-cbc -K $encrypted_2230a114d608_key -iv $encrypted_2230a114d608_iv
-  -in all.gpg.enc -out /tmp/all.gpg -d
-- openssl aes-256-cbc -K $encrypted_42099b4af021_key -iv $encrypted_42099b4af021_iv
   -in all.gpg.enc -out /tmp/all.gpg -d
 - gpg --import /tmp/all.gpg
 install: true
@@ -24,10 +24,7 @@ before_deploy:
 - git config --global user.email "io.scalecube.ci@gmail.com"
 - git config --global user.name "io-scalecube-ci"
 - git checkout -b $TRAVIS_BRANCH-$TRAVIS_BUILD_NUMBER;
-- eval "$(ssh-agent -s)"
-- chmod 600 /tmp/io-scalecube-ci_rsa
-- ssh-add /tmp/io-scalecube-ci_rsa
-- ssh -T git@github.com | true
+
 deploy:
 - provider: script
   script: mvn deploy -DskipTests=true -Dmaven.javadoc.skip=true -B -V -s travis-settings.xml
