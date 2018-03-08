@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>io.scalecube</groupId>
 	<artifactId>scalecube-rabbitmq</artifactId>
-	<version>1.0.5-SNAPSHOT</version>
+	<version>1.0.6-SNAPSHOT</version>
 	<name>ScaleCube/RabbitMQ</name>
 
 	<description>
@@ -35,7 +35,6 @@
 		<netty.version>4.0.40.Final</netty.version>
 		<guava.version>19.0</guava.version>
 		<scalecube.version>1.0.3</scalecube.version>
-		<gpg.skip>true</gpg.skip>
 	</properties>
 
 	<dependencies>
