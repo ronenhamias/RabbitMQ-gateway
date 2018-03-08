@@ -24,6 +24,7 @@ script:
 
 deploy:
   - provider: script
+    skip_cleanup: true
     script: mvn deploy -DskipTests=true -Dmaven.javadoc.skip=true -B -V -s travis-settings.xml
     on:
       branch: develop
@@ -32,6 +33,6 @@ deploy:
     script:
     - git checkout -b $TRAVIS_BRANCH-$TRAVIS_BUILD_NUMBER
     - git push origin $TRAVIS_BRANCH-$TRAVIS_BUILD_NUMBER
-    - mvn release:prepare release:perform -DautoVersionSubmodules=true -Darguments="-DskipTests=true" -DscmCommentPrefix='[skip ci] [maven-release-plugin]' -DskipTests=true -B -V -s travis-settings.xml
+    - mvn release:prepare release:perform -DautoVersionSubmodules=true -Darguments="skipTests=true" -DscmCommentPrefix='[skip ci] [maven-release-plugin]' -DskipTests=true -B -V -s travis-settings.xml
     on:
       branch: master
