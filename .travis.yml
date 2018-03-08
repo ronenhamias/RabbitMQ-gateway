@@ -8,7 +8,7 @@ notifications:
 services:
 - rabbitmq
 before_install:
-- openssl aes-256-cbc -K $encrypted_1fc90f464345_key -iv $encrypted_1fc90f464345_iv -in all.gpg.enc -out /tmp/all.gpg -d
+- openssl aes-256-cbc -K $encrypted_42099b4af021_key -iv $encrypted_42099b4af021_iv -in all.gpg.enc -out /tmp/all.gpg -d
 - openssl aes-256-cbc -K $encrypted_2230a114d608_key -iv $encrypted_2230a114d608_iv -in io-scalecube-ci_rsa.enc -out /tmp/io-scalecube-ci_rsa -d
 - gpg --import /tmp/all.gpg
 
