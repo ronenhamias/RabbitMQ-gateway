@@ -17,6 +17,7 @@ before_deploy:
 - eval "$(ssh-agent -s)"
 - chmod 600 /tmp/io-scalecube-ci_rsa
 - ssh-add /tmp/io-scalecube-ci_rsa
+- ssh git@github.com
 
 deploy:
 - provider: script
