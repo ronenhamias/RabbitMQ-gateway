@@ -24,16 +24,15 @@ script:
 before_deploy:
   - git config --global user.email "builds@travis-ci.com"
   - git config --global user.name "Travis CI"
-
+  - git checkout -b $TRAVIS_BRANCH-$TRAVIS_BUILD_NUMBER;
+  - git push origin $TRAVIS_BRANCH-$TRAVIS_BUILD_NUMBER;
 deploy:
 - provider: script
   script: mvn deploy -DskipTests=true -Dmaven.javadoc.skip=true -B -V -s travis-settings.xml
   on:
     branch: develop
 - provider: script
-  script: |
-    git checkout -b $TRAVIS_BRANCH-$TRAVIS_BUILD_NUMBER;
-    git push origin $TRAVIS_BRANCH-$TRAVIS_BUILD_NUMBER;
+  script: 
     mvn release:prepare release:perform -DautoVersionSubmodules=true -DscmCommentPrefix='[skip ci] [maven-release-plugin]' -DskipTests=true -Dmaven.javadoc.skip=true -B -V -s travis-settings.xml;
   on:
     branch: master
