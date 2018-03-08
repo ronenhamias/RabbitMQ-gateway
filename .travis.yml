@@ -9,16 +9,15 @@ services:
 - rabbitmq
 before_install:
 - openssl aes-256-cbc -K $encrypted_2230a114d608_key -iv $encrypted_2230a114d608_iv
-  -in secrets.tar.enc -out secrets.tar -d
-- openssl aes-256-cbc -K $encrypted_2230a114d608_key -iv $encrypted_2230a114d608_iv
-  -in all.gpg.enc -out /tmp/all.gpg -d
-- openssl aes-256-cbc -K $encrypted_2230a114d608_key -iv $encrypted_2230a114d608_iv
-  -in io-scalecube-ci_rsa.enc -out /tmp/io-scalecube-ci_rsa -d
+  -in secrets.tar.enc -out /tmp/secrets.tar -d
+- pushd /tmp
+- tar -xvf secrets.tar 
 - eval "$(ssh-agent -s)"
 - chmod 600 /tmp/io-scalecube-ci_rsa
 - ssh-add /tmp/io-scalecube-ci_rsa
 - ssh -T git@github.com | true
 - gpg --import /tmp/all.gpg
+- popd
 install: true
 script:
 - mvn -version
