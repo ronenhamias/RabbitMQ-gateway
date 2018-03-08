@@ -11,7 +11,6 @@ install: true
 script:
 - mvn -version
 before_deploy:
-- echo -e "machine github.com\n  login $CI_USER_TOKEN" >> ~/.netrc
 - git config --global user.email "io.scalecube.ci@gmail.com"
 - git config --global user.name "io-scalecube-ci"
 - git checkout -b $TRAVIS_BRANCH-$TRAVIS_BUILD_NUMBER;
