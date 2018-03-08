@@ -142,6 +142,7 @@
 		<url>https://github.com/scalecube/RabbitMQ-gateway.git</url>
 		<connection>scm:git:git@github.com:scalecube/RabbitMQ-gateway.git</connection>
 		<developerConnection>scm:git:git@github.com:scalecube/RabbitMQ-gateway.git</developerConnection>
+		<tag>HEAD</tag>
 	</scm>
 
 	<build>
