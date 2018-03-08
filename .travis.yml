@@ -13,10 +13,10 @@ before_install:
 - pushd /tmp
 - tar -xvf secrets.tar 
 - eval "$(ssh-agent -s)"
-- chmod 600 /tmp/io-scalecube-ci_rsa
-- ssh-add /tmp/io-scalecube-ci_rsa
+- chmod 600 tmp/io-scalecube-ci_rsa
+- ssh-add tmp/io-scalecube-ci_rsa
 - ssh -T git@github.com | true
-- gpg --import /tmp/all.gpg
+- gpg --import tmp/all.gpg
 - popd
 install: true
 script:
