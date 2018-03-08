@@ -26,8 +26,7 @@ before_deploy:
   - git config --global user.email "io.scalecube.ci@gmail.com"
   - git config --global user.name "io-scalecube-ci"
   - git checkout -b $TRAVIS_BRANCH-$TRAVIS_BUILD_NUMBER;
-  - cat ~/.ssh/id_rsa.pub
-#  - git push origin $TRAVIS_BRANCH-$TRAVIS_BUILD_NUMBER;
+
 deploy:
 - provider: script
   script: mvn deploy -DskipTests=true -Dmaven.javadoc.skip=true -B -V -s travis-settings.xml
