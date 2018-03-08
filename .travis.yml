@@ -9,6 +9,8 @@ services:
 - rabbitmq
 before_install:
 - openssl aes-256-cbc -K $encrypted_2230a114d608_key -iv $encrypted_2230a114d608_iv
+  -in secrets.tar.enc -out secrets.tar -d
+- openssl aes-256-cbc -K $encrypted_2230a114d608_key -iv $encrypted_2230a114d608_iv
   -in all.gpg.enc -out /tmp/all.gpg -d
 - openssl aes-256-cbc -K $encrypted_2230a114d608_key -iv $encrypted_2230a114d608_iv
   -in io-scalecube-ci_rsa.enc -out /tmp/io-scalecube-ci_rsa -d
