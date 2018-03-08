@@ -31,4 +31,12 @@ deploy:
   script: mvn release:prepare release:perform -DautoVersionSubmodules=true -DscmCommentPrefix='[skip ci] [maven-release-plugin]' -Darguments="-DskipTests=true -Dmaven.javadoc.skip=true" -B -V -s travis-settings.xml;
   on:
     branch: master
+after_deploy:
+  - git checkout master
+  - git merge $TRAVIS_BRANCH-$TRAVIS_BUILD_NUMBER master
+  - git branch -D $TRAVIS_BRANCH-$TRAVIS_BUILD_NUMBER
+  - git commit --amend -m "[skip ci] merging deploy-branch to master"
+  - git push origin master
+  - git push origin --delete $TRAVIS_BRANCH-$TRAVIS_BUILD_NUMBER
+  
 
