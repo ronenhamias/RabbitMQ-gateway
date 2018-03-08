@@ -9,12 +9,11 @@ notifications:
 services:
   - rabbitmq
 
-before_install:
-  - curl -sL https://github.com/jpm4j/jpm4j.installers/raw/master/dist/biz.aQute.jpm.run.jar >jpm4j.jar
-  - java -jar jpm4j.jar -u init
-  - ~/jpm/bin/jpm install com.codacy:codacy-coverage-reporter:assembly
+#before_install:
+#- sudo apt-get install jq
+#- wget -O ~/codacy-coverage-reporter-assembly-latest.jar $(curl https://api.github.com/repos/codacy/codacy-coverage-reporter/releases/latest | jq -r .assets[0].browser_download_url)
 
-after_success:
-  - bash <(curl -s https://codecov.io/bash) -t 4c29e7f6-c9f1-4fef-8a0e-62df364b567f
-  - ~/jpm/bin/codacy-coverage-reporter -l Java -r ./target/site/jacoco/jacoco.xml
 
+# after_success:
+# - java -cp ~/codacy-coverage-reporter-assembly-latest.jar com.codacy.CodacyCoverageReporter -l Java -r ./services/target/site/jacoco/jacoco.xml
+# }
