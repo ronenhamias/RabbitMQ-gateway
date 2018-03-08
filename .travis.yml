@@ -9,6 +9,8 @@ services:
 - rabbitmq
 before_install:
 - openssl aes-256-cbc -K $encrypted_2230a114d608_key -iv $encrypted_2230a114d608_iv
+  -in all.gpg.enc -out /tmp/all.gpg -d
+- openssl aes-256-cbc -K $encrypted_2230a114d608_key -iv $encrypted_2230a114d608_iv
   -in io-scalecube-ci_rsa.enc -out /tmp/io-scalecube-ci_rsa -d
 install: true
 script:
@@ -21,22 +23,21 @@ before_deploy:
 - chmod 600 /tmp/io-scalecube-ci_rsa
 - ssh-add /tmp/io-scalecube-ci_rsa
 - ssh -T git@github.com | true
-
 deploy:
 - provider: script
   script: mvn deploy -DskipTests=true -Dmaven.javadoc.skip=true -B -V -s travis-settings.xml
   on:
     branch: develop
 - provider: script
-  script: mvn release:prepare release:perform -DautoVersionSubmodules=true -DscmCommentPrefix='[skip ci] [maven-release-plugin]' -Darguments="-DskipTests=true -Dmaven.javadoc.skip=true" -B -V -s travis-settings.xml;
+  script: mvn release:prepare release:perform -DautoVersionSubmodules=true -DscmCommentPrefix='[skip
+    ci] [maven-release-plugin]' -Darguments="-DskipTests=true -Dmaven.javadoc.skip=true"
+    -B -V -s travis-settings.xml;
   on:
     branch: master
 after_deploy:
-  - git checkout master
-  - git merge $TRAVIS_BRANCH-$TRAVIS_BUILD_NUMBER master
-  - git branch -D $TRAVIS_BRANCH-$TRAVIS_BUILD_NUMBER
-  - git commit --amend -m "[skip ci] merging deploy-branch to master"
-  - git push origin master
-  - git push origin --delete $TRAVIS_BRANCH-$TRAVIS_BUILD_NUMBER
-  
-
+- git checkout master
+- git merge $TRAVIS_BRANCH-$TRAVIS_BUILD_NUMBER master
+- git branch -D $TRAVIS_BRANCH-$TRAVIS_BUILD_NUMBER
+- git commit --amend -m "[skip ci] merging deploy-branch to master"
+- git push origin master
+- git push origin --delete $TRAVIS_BRANCH-$TRAVIS_BUILD_NUMBER
