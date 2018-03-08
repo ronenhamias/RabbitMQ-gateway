@@ -25,11 +25,6 @@ script:
 deploy:
   - provider: script
     skip_cleanup: true
-    script: mvn deploy -DskipTests=true -Dmaven.javadoc.skip=true -B -V -s travis-settings.xml
-    on:
-      branch: develop
-  - provider: script
-    skip_cleanup: true
     script:
     - git checkout -b $TRAVIS_BRANCH-$TRAVIS_BUILD_NUMBER
     - git push origin $TRAVIS_BRANCH-$TRAVIS_BUILD_NUMBER
