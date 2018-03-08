@@ -34,7 +34,7 @@ deploy:
 - provider: script
   script: mvn release:prepare release:perform -DautoVersionSubmodules=true -DscmCommentPrefix='[skip
     ci] [maven-release-plugin]' -Darguments="-DskipTests=true -Dmaven.javadoc.skip=true"
-    -B -V -s travis-settings.xml -Dgpg.passphrase=$GPG_PASSPHRASE
+    -B -V -s travis-settings.xml -Dgpg.passphrase=$GPG_PASSPHRASE -Dgpg.keyname=6F7572820E5FEEC7
   on:
     branch: master
 after_deploy:
