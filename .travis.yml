@@ -18,7 +18,7 @@ before_install:
 - ssh-add tmp/io-scalecube-ci_rsa
 - ssh -T git@github.com | true
 - gpg --import tmp/all.gpg
-- gpg --edit-key {env.PGP_KEY} trust quit
+- gpg --edit-key ${env.PGP_KEY} trust quit
 - gpg --list-secret-keys --with-colon | grep sec
 - git config --global user.email "io.scalecube.ci@gmail.com"
 - git config --global user.name "io-scalecube-ci"
