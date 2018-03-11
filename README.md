@@ -13,7 +13,6 @@ Features:
 
 # Basic Usage
 
-
 Given a micro-service located somewhere in the cluster.
 we wish to communicated with it via rabbit mq api gateway and json format:
 
