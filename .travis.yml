@@ -8,11 +8,11 @@ notifications:
 services:
 - rabbitmq
 before_install:
-- git remote set-url origin git@github.com:scalecube/RabbitMQ-gateway.git
 - openssl aes-256-cbc -K $encrypted_2230a114d608_key -iv $encrypted_2230a114d608_iv
   -in secrets.tar.enc -out /tmp/secrets.tar -d
+- git remote set-url origin git@github.com:scalecube/RabbitMQ-gateway.git
 - pushd /tmp
-- tar -xvf secrets.tar 
+- tar -xvf secrets.tar
 - eval "$(ssh-agent -s)"
 - chmod 600 tmp/io-scalecube-ci_rsa
 - ssh-add tmp/io-scalecube-ci_rsa
@@ -31,14 +31,14 @@ script:
 - mvn -version
 before_deploy:
 - git checkout $TRAVIS_BRANCH
-
 deploy:
 - provider: script
   script: mvn deploy -DskipTests=true -Dmaven.javadoc.skip=true -B -V -s travis-settings.xml
   on:
     branch: develop
 - provider: script
-  script:
-    mvn release:prepare release:perform -DautoVersionSubmodules=true -DscmCommentPrefix='[skip ci] [maven-release-plugin]' -Darguments="-DskipTests=true -Dmaven.javadoc.skip=true" -B -V -s travis-settings.xml
+  script: mvn release:prepare release:perform -DautoVersionSubmodules=true -DscmCommentPrefix='[skip
+    ci] [maven-release-plugin]' -Darguments="-DskipTests=true -Dmaven.javadoc.skip=true"
+    -B -V -s travis-settings.xml
   on:
     branch: master
