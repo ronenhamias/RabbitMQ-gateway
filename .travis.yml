@@ -17,16 +17,17 @@ before_install:
 - ssh-add tmp/io-scalecube-ci_rsa
 - ssh -T git@github.com | true
 - gpg --import tmp/all.gpg
+- git config --global user.email "io.scalecube.ci@gmail.com"
+- git config --global user.name "io-scalecube-ci"
+- git config --global commit.gpgsign true
+- git config --global user.signingkey $env.GPG_KEY
 - popd
 install: true
 script:
 - mvn -version
 before_deploy:
-- git config --global user.email "io.scalecube.ci@gmail.com"
-- git config --global user.name "io-scalecube-ci"
-- git config --global commit.gpgsign true
-- git config --global user.signingkey $env.GPG_KEY
-- git checkout -b $TRAVIS_BRANCH-$TRAVIS_BUILD_NUMBER;
+- git checkout -b $TRAVIS_BRANCH-$TRAVIS_BUILD_NUMBER
+- git push origin $TRAVIS_BRANCH-$TRAVIS_BUILD_NUMBER
 deploy:
 - provider: script
   script: mvn deploy -DskipTests=true -Dmaven.javadoc.skip=true -B -V -s travis-settings.xml
@@ -40,7 +41,7 @@ deploy:
     branch: master
 after_deploy:
 - git checkout master
-- git merge $TRAVIS_BRANCH-$TRAVIS_BUILD_NUMBER master
+- git merge $TRAVIS_BRANCH-$TRAVIS_BUILD_NUMBER $TRAVIS_BRANCH
 - git branch -D $TRAVIS_BRANCH-$TRAVIS_BUILD_NUMBER
 - git commit --amend -m "[skip ci] merging deploy-branch to master"
 - git push origin master
