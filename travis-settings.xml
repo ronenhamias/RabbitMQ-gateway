@@ -16,7 +16,7 @@
 				<activeByDefault>true</activeByDefault>
 			</activation>
 			<properties>
-				<gpg.keyname>6F7572820E5FEEC7</gpg.keyname>
+				<gpg.keyname>${env.GPG_KEY}</gpg.keyname>
 				<gpg.passphrase>${env.GPG_PASSPHRASE}</gpg.passphrase>
 			</properties>
 		</profile>
