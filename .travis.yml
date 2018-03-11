@@ -21,6 +21,7 @@ before_install:
 - git config --global user.name "io-scalecube-ci"
 - git config --global commit.gpgsign true
 - git config --global user.signingkey $env.GPG_KEY
+- git remote set-url origin git@github.com:scalecube/RabbitMQ-gateway.git
 - popd
 install: true
 script:
