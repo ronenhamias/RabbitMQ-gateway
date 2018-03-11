@@ -25,7 +25,7 @@ before_deploy:
 - git config --global user.email "io.scalecube.ci@gmail.com"
 - git config --global user.name "io-scalecube-ci"
 - git config --global commit.gpgsign true
-- git config --global user.signingkey $("gpg --list-secret-keys --with-colon | grep sec | awk -F\: ' { print $5 }  '")
+- git config --global user.signingkey $env.GPG_KEY
 - git checkout -b $TRAVIS_BRANCH-$TRAVIS_BUILD_NUMBER;
 deploy:
 - provider: script
