@@ -8,9 +8,9 @@ notifications:
 services:
 - rabbitmq
 before_install:
+- git remote set-url origin git@github.com:scalecube/RabbitMQ-gateway.git
 - openssl aes-256-cbc -K $encrypted_2230a114d608_key -iv $encrypted_2230a114d608_iv
   -in secrets.tar.enc -out /tmp/secrets.tar -d
-- git remote set-url origin git@github.com:scalecube/RabbitMQ-gateway.git
 - pushd /tmp
 - tar -xvf secrets.tar 
 - eval "$(ssh-agent -s)"
@@ -18,7 +18,7 @@ before_install:
 - ssh-add tmp/io-scalecube-ci_rsa
 - ssh -T git@github.com | true
 - gpg --import tmp/all.gpg
-- gpg --list-secret-keys --with-colon
+- gpg --list-secret-keys --with-colon | grep sec
 - git config --global user.email "io.scalecube.ci@gmail.com"
 - git config --global user.name "io-scalecube-ci"
 - git config --global commit.gpgSign false
