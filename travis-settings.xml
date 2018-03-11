@@ -9,6 +9,10 @@
 			<username>${env.SONATYPE_USERNAME}</username>
 			<password>${env.SONATYPE_PASSWORD}</password>
 		</server>
+		 <server>
+			 <id>${env.GPG_KEY}</id>
+			 <passphrase>${env.GPG_PASSPHRASE}</passphrase>
+		</server>
 	</servers>
 	<profiles>
 		<profile>
@@ -17,7 +21,6 @@
 			</activation>
 			<properties>
 				<gpg.keyname>${env.GPG_KEY}</gpg.keyname>
-				<gpg.passphrase>${env.GPG_PASSPHRASE}</gpg.passphrase>
 			</properties>
 		</profile>
 	</profiles>
