@@ -27,8 +27,6 @@ install: true
 script:
 - mvn -version
 before_deploy:
-- git checkout -b $TRAVIS_BRANCH-$TRAVIS_BUILD_NUMBER
-- git merge --ff-only origin:$TRAVIS_BRANCH $TRAVIS_BRANCH-$TRAVIS_BUILD_NUMBER 
 - git checkout $TRAVIS_BRANCH
 
 deploy:
