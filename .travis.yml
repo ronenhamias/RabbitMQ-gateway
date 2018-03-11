@@ -19,7 +19,7 @@ before_install:
 - ssh -T git@github.com | true
 - gpg2 --fast-import tmp/all.gpg
 - echo -e "trust\n5\ny\n" | gpg2 --command-fd 0 --edit-key $GPG_KEY
-- gpg2 --list-secret-keys --with-colon | grep sec
+- gpg2 --list-secret-keys --with-colon
 - git config --global user.email "io.scalecube.ci@gmail.com"
 - git config --global user.name "io-scalecube-ci"
 - git config --global commit.gpgSign true
