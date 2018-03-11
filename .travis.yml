@@ -17,7 +17,7 @@ before_install:
 - ssh-add tmp/io-scalecube-ci_rsa
 - ssh -T git@github.com | true
 - gpg --import tmp/all.gpg
-- "gpg --list-secret-keys --with-colon | grep sec | awk -F: ' { print $5 }  '  >> ~/.gnupg/gpg.conf"
+- git config --global user.signingkey $(gpg --list-secret-keys --with-colon | grep sec | awk -F: ' { print $5 }  ')
 - popd
 install: true
 script:
