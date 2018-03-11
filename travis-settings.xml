@@ -9,6 +9,10 @@
 			<username>${env.SONATYPE_USERNAME}</username>
 			<password>${env.SONATYPE_PASSWORD}</password>
 		</server>
+		 <server>
+			 <id>${env.GPG_KEY}</id>
+			 <passphrase>${env.GPG_PASSPHRASE}</passphrase>
+		</server>
 	</servers>
 	<profiles>
 		<profile>
@@ -16,8 +20,7 @@
 				<activeByDefault>true</activeByDefault>
 			</activation>
 			<properties>
-				<gpg.keyname>6F7572820E5FEEC7</gpg.keyname>
-				<gpg.passphrase>${env.GPG_PASSPHRASE}</gpg.passphrase>
+				<gpg.keyname>${env.GPG_KEY}</gpg.keyname>
 			</properties>
 		</profile>
 	</profiles>
