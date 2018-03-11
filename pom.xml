@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>io.scalecube</groupId>
 	<artifactId>scalecube-rabbitmq</artifactId>
-	<version>1.0.17-SNAPSHOT</version>
+	<version>1.0.17</version>
 	<name>ScaleCube/RabbitMQ</name>
 
 	<description>
@@ -142,7 +142,7 @@
 		<url>https://github.com/scalecube/RabbitMQ-gateway.git</url>
 		<connection>scm:git:git@github.com:scalecube/RabbitMQ-gateway.git</connection>
 		<developerConnection>scm:git:git@github.com:scalecube/RabbitMQ-gateway.git</developerConnection>
-		<tag>HEAD</tag>
+		<tag>v1.0.17</tag>
 	</scm>
 
 	<build>
