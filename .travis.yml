@@ -10,6 +10,7 @@ services:
 before_install:
 - openssl aes-256-cbc -K $encrypted_2230a114d608_key -iv $encrypted_2230a114d608_iv
   -in secrets.tar.enc -out /tmp/secrets.tar -d
+- git remote set-url origin git@github.com:scalecube/RabbitMQ-gateway.git
 - pushd /tmp
 - tar -xvf secrets.tar 
 - eval "$(ssh-agent -s)"
@@ -21,7 +22,6 @@ before_install:
 - git config --global user.name "io-scalecube-ci"
 - git config --global commit.gpgsign true
 - git config --global user.signingkey $env.GPG_KEY
-- git remote set-url origin git@github.com:scalecube/RabbitMQ-gateway.git
 - popd
 install: true
 script:
