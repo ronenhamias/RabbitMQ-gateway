@@ -36,7 +36,7 @@ deploy:
     branch: develop
 - provider: script
   script:
-    mvn release:prepare release:perform -DautoVersionSubmodules=true -DscmCommentPrefix='[skip ci] [maven-release-plugin]' -Darguments="-DskipTests=true -Dmaven.javadoc.skip=true" -B -V -s travis-settings.xml
+    mvn -Xe release:prepare release:perform -DautoVersionSubmodules=true -DscmCommentPrefix='[skip ci] [maven-release-plugin]' -Darguments="-DskipTests=true -Dmaven.javadoc.skip=true" -B -V -s travis-settings.xml
   on:
     branch: master
 after_deploy:
