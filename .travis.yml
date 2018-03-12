@@ -22,7 +22,7 @@ before_install:
 - gpg2 --list-secret-keys --with-colon | grep sec
 - git config --global user.email "io.scalecube.ci@gmail.com"
 - git config --global user.name "io-scalecube-ci"
-- git config --global commit.gpgSign true
+- git config --global commit.gpgSign false
 - git config --global gpg.program $(which gpg2)
 - git config --global user.signingKey $GPG_KEY
 - popd
